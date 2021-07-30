@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import React, {useState} from 'react'
 import './App.css';
+import BigTwo from './gameLogic/game';
+import PlayerCount from './PlayerCount';
 
 function App() {
+
+  /**Sets the player count to state based on handlePlayers()*/
+  const [players, setPlayers] = useState(2);
+  const [deck_id, setDeck_id] = useState(2);
+
+  //set state so all player cards are stored
+
+  //set state to show current player
+  //set state to show currentPlay
+
+  
+  console.log(BigTwo.splitDeck(2, "ptwiqsnljtgr"))
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PlayerCount handlePlayers={handlePlayers}/>
     </div>
   );
 }
