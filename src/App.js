@@ -1,6 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+// import { Route } from 'react-router-dom';
 import './App.css';
+import GameTable from './GameTable';
 import BigTwo from './game';
+// Context
+import PlayersContext from './PlayersContext';  
 
 function App() {
   /*Save deckID */
@@ -16,7 +20,7 @@ function App() {
   const initial_play = { numCardsPlayed: 0, cards: []}
   const [currPlay, setCurrPlay] = useState(initial_play)
 
-  //get new deck from api
+  //get new deck from API, store deckID in state;
   useEffect(() => {
     const newDeck = async() => {
       let {deck_id} = await BigTwo.shuffleNewCard();
@@ -25,7 +29,7 @@ function App() {
     newDeck();
   },[])
   
-  /*split deck when a new deckID is obtained*/
+  /*split deck when a new deckID is obtained, store in state*/
   useEffect(() => {
     //set state so all player cards are stored
     const splitDeck = async () => {
@@ -43,8 +47,12 @@ function App() {
 
   
   return (
-    <div className="App">
+    <PlayersContext.Provider value={{isPlayerOne, playerOne, playerTwo}}>
+      <div className="App">
+        <h1>BigTwo</h1>
+          <GameTable/>
     </div>
+    </PlayersContext.Provider>    
   );
 }
 
