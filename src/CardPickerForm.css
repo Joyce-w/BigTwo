@@ -1,0 +1,14 @@
+.CardPickForm-playerHand{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.CardPickForm-playerHand input{
+    display: none;
+}
+
+:checked + label img {
+    border: 2px solid blue;
+    border-radius: 15px;
+}
