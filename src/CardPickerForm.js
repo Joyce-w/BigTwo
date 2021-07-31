@@ -10,18 +10,28 @@ const CardPickerForm = () => {
     let player = isPlayerOne ? playerOne : playerTwo;
 
     // manage state of each possible card selected
-    const [checkedState, setCheckedState] = useState(
+    const [checkedState, setCheckedState] = useState(() =>
         new Array(26).fill(false)
         );        
 
- 
-
     // handle logic when a card is selected
-    const handleCardSelect = (cardIdx, e) => {
+    const [currSelection, setCurrSelection] = useState([]);
+
+
+    const handleChange = (card, index) => {
+        
+        console.log(card.code)
+        if (currSelection.length === 0) {
+            setCurrSelection(card)
+        }
+
+        console.log(currSelection)
+        
         let isCardChecked = checkedState.map((card, idx) =>
-            idx === cardIdx ? !card : card)
+            idx === index ? !card : card)
         setCheckedState(isCardChecked)
-    }
+
+    }        
 
     // get current players cards
     let displayPlayerHand = playerOne && playerTwo ?
@@ -30,7 +40,12 @@ const CardPickerForm = () => {
             {player.map((card, idx) => {
                 return (
                     <div  className="card" key={card.code}>
-                        <input type="checkbox" id={idx} name="card" value={card.code} checked={ checkedState[idx] } onChange={() =>handleCardSelect(idx)}></input>
+                        <input
+                            type="checkbox"
+                            id={idx}
+                            name="card"
+                            checked={checkedState[idx]}
+                            onChange={(card, idx) => handleChange(card, idx)}></input>
                         <label  htmlFor={idx}>
                             <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>    
                         </label>
@@ -39,17 +54,7 @@ const CardPickerForm = () => {
             })}
             </fieldset>:
         <p>Loading player cards...</p>
-    
 
-    
-
-    // store players decision
-    const [numCards, setNumCards] = useState(null)
-    // logs the card that the player picked
-    const handleChange = (e) => {
-        const { value } = e.target;
-        setNumCards(value)
-    }
 
     //handles the submit when player decides on how many cards to play
     const handleSubmit = (e) => {
