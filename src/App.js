@@ -22,7 +22,7 @@ function App() {
   const [isPlayerOne, setIsPlayerOne] = useState(true)
   /**Keep track of the most curent play */
   //{code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "HEARTS"}
-  const initial_play = { numCardsPlayed: 0, cards: [{code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "HEARTS"}], placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"}
+  const initial_play = { numCardsPlayed: 0, cards: [], placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"}
   const [currPlay, setCurrPlay] = useState(initial_play)
 
   //get new deck from API, store deckID in state;
@@ -50,24 +50,35 @@ function App() {
   const handleNewHand = (hand) => {
     //check to see if the same amount of cards are played
     let isValidPlay = CardCombos.validCardPlay(currPlay.numCardsPlayed, hand.length)
+    
     //if valid, check hand for correct combo
     if (isValidPlay) {
       console.log('valid play')
       if (hand.length === 1) {
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
-          setCurrPlay({numCardsPlayed: hand.length, cards: hand})
+          setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
         }
         else {
-        console.log(CardCombos.isHigherSingle(hand, currPlay))   
+          let isHigher = CardCombos.isHigherSingle(hand, currPlay)
+          if (isHigher) {
+            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+          } else {
+            alert('current card is not higher than hand to beat')
+          }
         }
-
       }
+    
       //check if valid pair
       else if (hand.length === 2) {
         /*check to see if valid 2 card play, update currPlay valid*/
         let isValid = CardCombos.isValidPair(hand);
         if (isValid) {
+        //add hand if currPlay is empty
+        if (currPlay.cards.length === 0) {
+          setCurrPlay({numCardsPlayed: hand.length, cards: hand})
+        }
+
           //check to see if higher than prev
           setCurrPlay({numCardsPlayed: hand.length, cards: hand})
         } else {
@@ -75,6 +86,7 @@ function App() {
         }
 
       }
+        
       /*check for valid five-card, update currPlay valid*/
       else if (hand.length === 5) {
         let isValid = CardCombos.isValidFiveCard(hand)
@@ -87,14 +99,10 @@ function App() {
 
 
       }
-
-    } else {
-    //if not, pick cards again  
-      console.log('Invalid play! Cards must match current play')
     }
-
+  } 
     //check prev hand to see who is higher
-  }
+
 
   return (
     <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo}}>
@@ -102,8 +110,10 @@ function App() {
 
         <h1>Big Two</h1>
         <div className="Table">
-          <p>This is the game table</p>
-          {<img alt="placeholder for current play" src={currPlay.placeholder}></img>}
+          <p>Current Hand to Beat</p>
+          {currPlay.cards.map(card => {
+            return  <img alt={card.code} src={card.image}></img>
+          })}
         </div>
 
         {/* Have player pick the number of cards to play */}

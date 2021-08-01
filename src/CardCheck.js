@@ -54,16 +54,23 @@ class CardCombos {
         let handSuitVal = CardCombos.suitOrder.indexOf(hand[0].suit);
         let currPlayNumVal = CardCombos.numOrder[currHand.cards[0].value]
         let currPlaySuitVal = CardCombos.suitOrder.indexOf(currHand.cards[0].suit);
-
+        // console.log('hand', handNumVal, 'curr',currPlayNumVal)
+        // console.log('hand suit', handSuitVal, 'curr suit',currPlaySuitVal)
+        
         //if hand value is the same & suit is higher, true     
-        if (handNumVal >= currPlayNumVal && handSuitVal > currPlaySuitVal) {
+        if(handNumVal >= currPlayNumVal && handSuitVal > currPlaySuitVal){
             return true;
-        } else {
+        }
+        else if (handNumVal > currPlayNumVal && handSuitVal < currPlaySuitVal)  {
+            return true;
+        }
+        else {
             return false;
         }
     }
  
     /*check if pair higher than currPlay's pair*/
+
 
     /*check if 5 card higher than currPlay's 5card*/
 
