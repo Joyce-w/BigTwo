@@ -1,8 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import'./CardPickerForm.css';
 import PlayersContext from './PlayersContext';
 
-const CardPickerForm = () => {
+const CardPickerForm = ({handleNewHand}) => {
+    // store players decision
+    const [numCards, setNumCards] = useState(null)
 
     // get player cards
     const {isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
@@ -15,23 +17,52 @@ const CardPickerForm = () => {
         );        
 
     // handle logic when a card is selected
-    const [currSelection, setCurrSelection] = useState([]);
+    const [currSelection, setCurrSelection] = useState([])
+
+    const [currHand, setCurrHand] = useState([]);
 
 
+    //         // if (!hand) {
+    //         //     console.log('empty hand')
+    //         //     //set selection to hand
+    //         //     setCurrHand(data => data)
+    //         //     console.log('this is hand' ,hand)
+    //         // } else {
+    //         //     console.log('NOT empty hand')
+    //         //     //iterate thru hand
+    //         //     //if selection[0] matches any hand.code return true
+    //         //     let test = hand.filter(el => console.log(el))
+    //         //     console.log(test)
+    //         // }
+
+    //     }
+    //     isDupe(currSelection, currHand)
+  
+    // }, [currSelection])
+    
+    //how to check for dupes? 
     const handleChange = (card, index) => {
-        
-        console.log(card.code)
-        if (currSelection.length === 0) {
-            setCurrSelection(card)
+        console.log(card)
+        const updateCards = (c) => {
+            setCurrHand((currHand) => [...currHand, c])
         }
-
-        console.log(currSelection)
-        
+        updateCards(card)
+            
+        //check if the card is 'checkboxed' in state, toggle on clicks
         let isCardChecked = checkedState.map((card, idx) =>
             idx === index ? !card : card)
         setCheckedState(isCardChecked)
 
-    }        
+    }
+    
+
+    //handles the submit when player decides on how many cards to play
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleNewHand(currHand)
+        console.log(currHand)
+        
+    }
 
     // get current players cards
     let displayPlayerHand = playerOne && playerTwo ?
@@ -45,7 +76,7 @@ const CardPickerForm = () => {
                             id={idx}
                             name="card"
                             checked={checkedState[idx]}
-                            onChange={(card, idx) => handleChange(card, idx)}></input>
+                            onChange={(e) => handleChange(card, idx)}></input>
                         <label  htmlFor={idx}>
                             <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>    
                         </label>
@@ -54,17 +85,10 @@ const CardPickerForm = () => {
             })}
             </fieldset>:
         <p>Loading player cards...</p>
-
-
-    //handles the submit when player decides on how many cards to play
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        
-    }
+    
     return (
-        <form>
-        <div className="radio">
+        <form onSubmit={handleSubmit}>
+        {/* <div className="radio">
           <label>
             <input
               type="radio"
@@ -111,7 +135,7 @@ const CardPickerForm = () => {
         </div>
         <div>
         </div>
-        
+         */}
         {displayPlayerHand}
 
         <button className="btn btn-default" type="submit">

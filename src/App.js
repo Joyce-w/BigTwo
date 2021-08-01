@@ -41,13 +41,20 @@ function App() {
       setPlayerOne(p1.data.cards)
       setPlayerTwo(p2.data.cards)
     }
-    
     splitDeck();
     setIsLoading(false)
   },[deckID])
 
-  //set state to show current player
-  //set state to show currentPlay
+  /**update currPlay */
+  const updatecurrPlay = (hand) => {
+
+  }
+
+  //Handle palyers hand submission
+  const handleNewHand = (hand) => {
+    console.log(hand)
+  }
+
   return (
     <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo}}>
       <div className="App">
@@ -59,7 +66,7 @@ function App() {
         </div>
 
         {/* Have player pick the number of cards to play */}
-        <CardPickerForm/>
+        <CardPickerForm handleNewHand={ handleNewHand }/>
 
 
         {/* <GameTable/> */}
