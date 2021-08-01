@@ -63,8 +63,7 @@ function App() {
       }
       //check for valid five-card      
       else if (hand.length === 5) {
-        let isValid = CardCombos.isValidFiveCard(hand);
-        console.log(CardCombos.isValidFiveCard())
+        console.log(CardCombos.isValidFiveCard(hand))
       }
 
     } else {

@@ -50,9 +50,11 @@ class PokerHands {
     }
 
     /**Handles 5 card play */
-    static isValidFiveCard = () => {
-        console.log(PokerHands.numOrder)
-       
+    static isValidFiveCard = (hand) => {
+        let handSuit = hand.map(card => {
+            return card;
+        })
+        return(handSuit)
     }
 }
 

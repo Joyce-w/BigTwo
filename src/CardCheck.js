@@ -50,8 +50,20 @@ class CardCombos {
 
     /**Handles 5 card play */
     static isValidFiveCard = (hand) => {
+        //goes into pokerhands
 
-        console.log( PokerHands.isValidFiveCard())
+        //check if cards are a flush
+        let isFlush = hand.map(card => card.suit).every((suit,idx,arr) => suit === arr[0])
+        
+        //check for straight
+        let isSequential = hand.map(card => PokerHands.numOrder[card.value]).sort((a, b) => a - b)
+            .every((el, i, arr) => i === arr.length - 1 || el + 1 === arr[i + 1])
+        
+        //check for straight flush 
+        let isStraightFlush = isFlush && isSequential ? true : false;
+
+
+        return(isStraightFlush)
     }
 }
 
