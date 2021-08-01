@@ -3,59 +3,56 @@ class PokerHands {
     static numOrder;
     static suitOrder;
 
-    static validCardPlay = (currPlayCards, newHandCount) => {
-        let validNumCards = [1, 2, 5];
-        console.log(currPlayCards, newHandCount)
-        //if currPlay is empty & newHandCount is not & has valid cards, valid play
-        if (currPlayCards === 0 && newHandCount !== 0 && validNumCards.includes(newHandCount)) {
-            console.log('this is a valid play')
-            return true;
-        } //if currPlayCards is not 0 and newHandCount is equal to that number, valid play
-        else if (currPlayCards !== 0 && newHandCount === currPlayCards) {
-            console.log('they are the same number of cards not 0')
-            return true;
-        }        
-        else {
-            return false;
+    //check if cards are a flush
+    static isFlush = (hand) => {
+        return hand.map(card => card.suit).every((suit, idx, arr) => suit === arr[0])
+    } 
+    
+    //check for straight
+    static isStraight = (valArr) => {
+        return valArr
+            .every((el, i, arr) => i === arr.length - 1 || el + 1 === arr[i + 1])
+    }
+    
+    //check for straight flush 
+    static isStraightFlush = (hand,valArr) => {
+        return PokerHands.isFlush(hand) && PokerHands.isStraight(valArr) ? true : false
+    }
+
+    //check for 4 of a kind
+    static isFourOfAKind = (valArr) => {
+        
+        let count = {};
+        for (let val of valArr) {
+            if (count[val]) {
+                count[val] += 1;
+            } else {
+                count[val] = 1;
+            }
         }
-    }
-
-
-    /**Handles single card play */
-    // static async single() {
-    //     if (currPlay = null) {
-    //         currPlay = `${currPlay}`
-    //         //remove card from players hand
-    //         //checkwin()
-    //     }
-    //     else if (card > currPlay) {
-    //         currPlay = `${currPlay}`
-    //         //remove card from players hand
-    //         //checkwin()
-    //     } else if (card < currPlay || pickCard !== currPlay.length){
-    //         console.log('Invalid PLay! Try again or pass!')
-    //     }
-    // }
-
-    /**Handles pair card play */
-    static isValidPair = (hand) => {
-        console.log(hand)
-        if (hand[0].value === hand[1].value) {
-            console.log('they are the same value!')
+        if (Object.values(count).includes(4)) {
             return true;
-        } else {
-            console.log('they are not a pair')
-            return false
         }
+        return false;
     }
 
-    /**Handles 5 card play */
-    static isValidFiveCard = (hand) => {
-        let handSuit = hand.map(card => {
-            return card;
-        })
-        return(handSuit)
+    //check for 3 card combos (full house or 3 of a kind)
+    static isThreeCard = (valArr) => {
+        let count = {};
+        for (let val of valArr) {
+            if (count[val]) {
+                count[val] += 1;
+            } else {
+                count[val] = 1;
+            }
+        }
+        let arraySum = Object.values(count).sort((a, b) => a - b).join('');
+        // 113 is 3 of a kind & 23 is full house
+        let res = arraySum === '113' || arraySum === '23' ? true : false;
+        return res
+
     }
+
 }
 
 PokerHands.numOrder = {

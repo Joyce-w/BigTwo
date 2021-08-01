@@ -21,7 +21,8 @@ function App() {
   /*Keep track of which player is currently playing */
   const [isPlayerOne, setIsPlayerOne] = useState(true)
   /**Keep track of the most curent play */
-  const initial_play = { numCardsPlayed: 0, cards: [], placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"}
+  //{code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "HEARTS"}
+  const initial_play = { numCardsPlayed: 0, cards: [{code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "HEARTS"}], placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"}
   const [currPlay, setCurrPlay] = useState(initial_play)
 
   //get new deck from API, store deckID in state;
@@ -45,34 +46,52 @@ function App() {
     setIsLoading(false)
   },[deckID])
 
-  /**update currPlay */
-  const updatecurrPlay = (hand) => {
-
-  }
-
   //Handle palyers hand submission
   const handleNewHand = (hand) => {
-    //check to see if the cards played are valid, 
+    //check to see if the same amount of cards are played
     let isValidPlay = CardCombos.validCardPlay(currPlay.numCardsPlayed, hand.length)
     //if valid, check hand for correct combo
     if (isValidPlay) {
-      //check if valid pair
-      if (hand.length === 2) {
-        let isValid = CardCombos.isValidPair(hand);
-        return isValid;
+      console.log('valid play')
+      if (hand.length === 1) {
+        //add hand if currPlay is empty
+        if (currPlay.cards.length === 0) {
+          setCurrPlay({numCardsPlayed: hand.length, cards: hand})
+        }
+        else {
+        console.log(CardCombos.isHigherSingle(hand, currPlay))   
+        }
+
       }
-      //check for valid five-card      
+      //check if valid pair
+      else if (hand.length === 2) {
+        /*check to see if valid 2 card play, update currPlay valid*/
+        let isValid = CardCombos.isValidPair(hand);
+        if (isValid) {
+          //check to see if higher than prev
+          setCurrPlay({numCardsPlayed: hand.length, cards: hand})
+        } else {
+          alert('invalid 2 pair!')          
+        }
+
+      }
+      /*check for valid five-card, update currPlay valid*/
       else if (hand.length === 5) {
-        console.log(CardCombos.isValidFiveCard(hand))
+        let isValid = CardCombos.isValidFiveCard(hand)
+        if (isValid) {
+          //check to see if higher than prev
+          setCurrPlay({numCardsPlayed: hand.length, cards: hand})          
+        } else {
+          alert('invalid 5 card!')          
+        }
+
+
       }
 
     } else {
     //if not, pick cards again  
       console.log('Invalid play! Cards must match current play')
     }
-
-
-
 
     //check prev hand to see who is higher
   }

@@ -1,7 +1,9 @@
 import PokerHands from "./PokerHands";
 
 class CardCombos {
-    static id;
+
+    static numOrder;
+    static suitOrder;
 
     /**Make sure the number of cards the player plays is equal to the currHand*/
     static validCardPlay = (currPlayCards, newHandCount) => {
@@ -21,21 +23,6 @@ class CardCombos {
         }
     }
 
-    /**Handles single card play */
-    // static async single() {
-    //     if (currPlay = null) {
-    //         currPlay = `${currPlay}`
-    //         //remove card from players hand
-    //         //checkwin()
-    //     }
-    //     else if (card > currPlay) {
-    //         currPlay = `${currPlay}`
-    //         //remove card from players hand
-    //         //checkwin()
-    //     } else if (card < currPlay || pickCard !== currPlay.length){
-    //         console.log('Invalid PLay! Try again or pass!')
-    //     }
-    // }
     /**Handles pair card play */
     static isValidPair = (hand) => {
         console.log(hand)
@@ -50,57 +37,55 @@ class CardCombos {
 
     /**Handles 5 card play */
     static isValidFiveCard = (hand) => {
-        //goes into pokerhands
+        //orders the card from the hand based on value
         let cardValues = hand.map(card => PokerHands.numOrder[card.value]).sort((a, b) => a - b);
-
-        //check if cards are a flush
-        let isFlush = hand.map(card => card.suit).every((suit, idx, arr) => suit === arr[0])
         
-        //check for straight
-        let isSequential = cardValues
-            .every((el, i, arr) => i === arr.length - 1 || el + 1 === arr[i + 1])
-        
-        //check for straight flush 
-        let isStraightFlush = isFlush && isSequential ? true : false;
+        let check5Cards = [PokerHands.isFlush(hand), PokerHands.isStraight(hand), PokerHands.isStraightFlush(hand,cardValues), PokerHands.isFourOfAKind(cardValues), PokerHands.isThreeCard(cardValues)].some(el => el)
 
-        //check for 4 of a kind
-        const isFourOfAKind = (hand) => {
-            let count = {};
-            for (let val of cardValues) {
-                if (count[val]) {
-                    count[val] += 1;
-                } else {
-                    count[val] = 1;
-                }
-            }
-            console.log('count', count)
-            if (Object.values(count).includes(4)) {
-                console.log('there are 4 cards of same value')
-                return true;
-            }
-        }
+        console.log('at least one true?', check5Cards)
+        return check5Cards ? true : false;
 
-        //check for 3 card combos (full house or 3 of a kind)
-        const isThreeCard = (hand) => {
-            let count = {};
-            for (let val of cardValues) {
-                if (count[val]) {
-                    count[val] += 1;
-                } else {
-                    count[val] = 1;
-                }
-            }
-            console.log('count', count)
-            let arraySum = Object.values(count).sort((a, b) => a - b).join('');
-            // 113 is 3 of a kind & 23 is full house
-            let res = arraySum === '113' || arraySum === '23' ? true : false;
-            return res
-
-        }
-
-        console.log(isThreeCard(hand))
     }
+    
+    /*check to see if single card higher than currPlay's card */
+    static isHigherSingle = (hand, currHand) => {
+
+        let handNumVal = CardCombos.numOrder[hand[0].value];
+        let handSuitVal = CardCombos.suitOrder.indexOf(hand[0].suit);
+        let currPlayNumVal = CardCombos.numOrder[currHand.cards[0].value]
+        let currPlaySuitVal = CardCombos.suitOrder.indexOf(currHand.cards[0].suit);
+
+        //if hand value is the same & suit is higher, true     
+        if (handNumVal >= currPlayNumVal && handSuitVal > currPlaySuitVal) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+ 
+    /*check if pair higher than currPlay's pair*/
+
+    /*check if 5 card higher than currPlay's 5card*/
+
+    
 }
+CardCombos.numOrder = {
+    "3": 0,
+    "4": 1,
+    "5": 2,
+    "6": 3,
+    "7": 4,
+    "8": 5,
+    "9": 6,
+    "10": 7,
+    "JACK": 8,
+    "QUEEN": 9,
+    "KING": 10,
+    "ACE": 11,
+    "2": 12
+};
+        
+CardCombos.suitOrder = ["DIAMONDS", "CLUBS", "HEARTS", "SPADES"];
 
     
 export default CardCombos;
