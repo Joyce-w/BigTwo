@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 // import { Route } from 'react-router-dom';
 import './App.css';
-import GameTable from './GameTable';
 import CardPickerForm from './CardPickerForm'
-import BigTwo from './game';
+import Deck from './Deck';
+import CardCombos from './CardCheck';
 // Context
 import PlayersContext from './PlayersContext';  
 
@@ -27,7 +27,7 @@ function App() {
   //get new deck from API, store deckID in state;
   useEffect(() => {
     const newDeck = async() => {
-      let {deck_id} = await BigTwo.shuffleNewCard();
+      let {deck_id} = await Deck.shuffleNewCard();
       setDeckID(deck_id);
     }
     newDeck();
@@ -37,7 +37,7 @@ function App() {
   useEffect(() => {
     //set state so all player cards are stored
     const splitDeck = async () => {
-      let {p1, p2} = await BigTwo.splitDeck(players, deckID)
+      let {p1, p2} = await Deck.splitDeck(players, deckID)
       setPlayerOne(p1.data.cards)
       setPlayerTwo(p2.data.cards)
     }
@@ -52,14 +52,37 @@ function App() {
 
   //Handle palyers hand submission
   const handleNewHand = (hand) => {
-    console.log(hand)
+    //check to see if the cards played are valid, 
+    let isValidPlay = CardCombos.validCardPlay(currPlay.numCardsPlayed, hand.length)
+    //if valid, check hand for correct combo
+    if (isValidPlay) {
+      //check if valid pair
+      if (hand.length === 2) {
+        let isValid = CardCombos.isValidPair(hand);
+        return isValid;
+      }
+      //check for valid five-card      
+      else if (hand.length === 5) {
+        let isValid = CardCombos.isValidFiveCard(hand);
+        console.log(CardCombos.isValidFiveCard())
+      }
+
+    } else {
+    //if not, pick cards again  
+      console.log('Invalid play! Cards must match current play')
+    }
+
+
+
+
+    //check prev hand to see who is higher
   }
 
   return (
     <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo}}>
       <div className="App">
 
-        <h1>BigTwo</h1>
+        <h1>Big Two</h1>
         <div className="Table">
           <p>This is the game table</p>
           {<img alt="placeholder for current play" src={currPlay.placeholder}></img>}
