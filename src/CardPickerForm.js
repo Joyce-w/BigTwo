@@ -42,16 +42,37 @@ const CardPickerForm = ({handleNewHand}) => {
     
     //how to check for dupes? 
     const handleChange = (card, index) => {
-        console.log(card)
-        const updateCards = (c) => {
-            setCurrHand((currHand) => [...currHand, c])
-        }
-        updateCards(card)
-            
         //check if the card is 'checkboxed' in state, toggle on clicks
         let isCardChecked = checkedState.map((card, idx) =>
             idx === index ? !card : card)
+        
+        const updateHand = (cards, i) => {
+
+            console.log(player[i])
+            /**If card is selected, add to currSelection, if card already present, remove it */
+            setCurrSelection(currSelection => cards[i] ? [...currSelection, player[i]] : currSelection.filter(el => el.code !==player[i].code))
+
+        }
+        updateHand(isCardChecked, index)
+        // setCurrSelection(()=> !isCardChecked[idx] ? card)
+
+        //add selected cards to hand state
+        //make sure they are unique
+
+
+
+        // const updateCards = (c) => {
+        //     setCurrHand((currHand) => [...currHand, c])
+        // }
+        // updateCards(card)
+
+            
+        //check if the card is 'checkboxed' in state, toggle on clicks
+        // let isCardChecked = checkedState.map((card, idx) =>
+        //     idx === index ? !card : card)
         setCheckedState(isCardChecked)
+
+        //check if code is in player hand, if so than remove
 
     }
     
@@ -60,7 +81,7 @@ const CardPickerForm = ({handleNewHand}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         handleNewHand(currHand)
-        console.log(currHand)
+
         
     }
 
