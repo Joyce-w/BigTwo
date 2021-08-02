@@ -93,6 +93,140 @@ class PokerHands {
         return res
     }
 
+    //If two hands are the same e.g. both full house, determine the higher hand
+    static determineHigherHand = (pokerHand, hand, currPlay) => {
+
+    }
+
+    /**Compares both hands of similar poker hand name and 
+     * determines who has the higher cards */
+
+    //determines if hand is higher than currPlay in a straight
+    static higherStraight = (hand, currPlay) => {
+        let highestHandCard = hand.map(card => PokerHands.numOrder[card.value]).sort((a, b) => b-a)[0];
+        let highestCurrPlayCard = currPlay.map(card => PokerHands.numOrder[card.value]).sort((a, b) => b-a)[0];
+        return highestHandCard > highestCurrPlayCard ? true : false;
+    }
+
+    //determines if hand is higher than currPlay in a flush
+    static higherFlush = (hand, currPlay) => {
+        let handSuit = hand[0].suit;
+        let currPlaySuit = currPlay[0].suit;
+
+        //check the index of PokerHands.suitOrder, higher index means the higher suit
+        return PokerHands.suitOrder.indexOf(handSuit) > PokerHands.suitOrder.indexOf(currPlaySuit) ? true : false;
+        
+    }
+
+    //determines if hand is higher than currPlay in a straight flush
+    static higherStraightFlush = (hand, currPlay) => {
+        let highestHandCard = hand.map(card => PokerHands.numOrder[card.value]).sort((a, b) => b-a)[0];
+        let highestCurrPlayCard = currPlay.map(card => PokerHands.numOrder[card.value]).sort((a, b) => b-a)[0];
+        
+        //determine higher card
+        if (highestHandCard > highestCurrPlayCard) {
+            console.log('higher hand')
+            return true
+        }
+        else if (highestCurrPlayCard > highestHandCard) {
+            console.log('higher currPLay')
+            return true
+        } else {
+            console.log('hand and currPlay equal in high card')
+            //if high cards are a tie determine higher suit (same as flush logic)
+            return PokerHands.higherFlush(hand, currPlay)            
+        }
+    }
+
+    //determines if hand is higher than currPlay in 4 of a kind
+    static higherFourOfAKind = (hand, currPlay) => {
+
+        //get card value for hand
+        let handCardVal = hand.map(card => card.value).sort((a, b) => a - b);
+
+        console.log(handCardVal)
+            //get count of cards
+            let handCount = {};
+            for (let val of handCardVal) {
+                if (handCount[val]) {
+                    handCount[val] += 1;
+                } else {
+                    handCount[val] = 1;
+                }
+            }
+        console.log(handCount)
+    
+        let handIdxofFour = Object.values(handCount).findIndex(el => el === 4 )
+        let handFourVal = Object.keys(handCount)[handIdxofFour]
+        let handVal = PokerHands.numOrder[handFourVal]
+
+        //get card value for currPlay
+        let currPlayVals = currPlay.map(card => card.value).sort((a, b) => a - b);
+
+            //get count of cards
+            let currPlayCount = {};
+            for (let val of currPlayVals) {
+                if (currPlayCount[val]) {
+                    currPlayCount[val] += 1;
+                } else {
+                    currPlayCount[val] = 1;
+                }
+            }
+        console.log(currPlayCount)
+        
+        let currPlayIdxofFour = Object.values(currPlayCount).findIndex(el => el === 4 )
+        let currPlayFourVal = Object.keys(currPlayCount)[currPlayIdxofFour]
+        let currPlayVal = PokerHands.numOrder[currPlayFourVal]
+
+        //compare the higher value between hand and currPlay
+        return handVal > currPlayVal ? true : false;
+    }
+
+    //determines if hand is higher than currPlay in full house or 3 of a kind
+    static higherFourOfAKind = (hand, currPlay) => {
+
+        //get card value for hand
+        let handCardVal = hand.map(card => card.value).sort((a, b) => a - b);
+
+        console.log(handCardVal)
+            //get count of cards
+            let handCount = {};
+            for (let val of handCardVal) {
+                if (handCount[val]) {
+                    handCount[val] += 1;
+                } else {
+                    handCount[val] = 1;
+                }
+            }
+        console.log(handCount)
+
+        let handIdxofFour = Object.values(handCount).findIndex(el => el === 3 )
+        let handFourVal = Object.keys(handCount)[handIdxofFour]
+        let handVal = PokerHands.numOrder[handFourVal]
+
+        //get card value for currPlay
+        let currPlayVals = currPlay.map(card => card.value).sort((a, b) => a - b);
+
+            //get count of cards
+            let currPlayCount = {};
+            for (let val of currPlayVals) {
+                if (currPlayCount[val]) {
+                    currPlayCount[val] += 1;
+                } else {
+                    currPlayCount[val] = 1;
+                }
+            }
+        console.log(currPlayCount)
+        
+        let currPlayIdxofFour = Object.values(currPlayCount).findIndex(el => el === 4 )
+        let currPlayFourVal = Object.keys(currPlayCount)[currPlayIdxofFour]
+        let currPlayVal = PokerHands.numOrder[currPlayFourVal]
+
+        //compare the higher value between hand and currPlay
+        return handVal > currPlayVal ? true : false;
+    }
+    
+    
 //end of PokerHand class
 }
 
@@ -112,7 +246,7 @@ PokerHands.numOrder = {
     "2": 12
 };
         
-PokerHands.suitOrder = ["DIAMOND", "CLUBS", "HEART", "SPADE"];
+PokerHands.suitOrder = ["DIAMONDS", "CLUBS", "HEARTS", "SPADES"];
 
 PokerHands.pokerHand = [
     'flush',

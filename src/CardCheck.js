@@ -11,11 +11,9 @@ class CardCombos {
         console.log(currPlayCards, newHandCount)
         //if currPlay is empty & newHandCount is not & has valid cards, valid play
         if (currPlayCards === 0 && newHandCount !== 0 && validNumCards.includes(newHandCount)) {
-            console.log('this is a valid play')
             return true;
         } //if currPlayCards is not 0 and newHandCount is equal to that number, valid play
         else if (currPlayCards !== 0 && newHandCount === currPlayCards) {
-            console.log('they are the same number of cards not 0')
             return true;
         }
         else {
@@ -126,6 +124,8 @@ class CardCombos {
         /*currPlay cards are higher points than the hand. 
         *Lower the number on CardCombos.fiveCardScore the higher the value
        */
+        
+        console.log('currPlay',currPlayScore , 'hand',handScore)
         if (currPlayScore < handScore) {
             console.log('current play ishigher')
             return false;
@@ -135,15 +135,19 @@ class CardCombos {
             console.log('hand play is higher')
             return true;
         }
-        // scores are equal, identify which is higher
 
+
+        // scores are equal, identify which is higher. either handScore or currPlayScore works.
+        let res = PokerHands.determineHigherHand(handScore, hand, currPlay)
+        return res
+    }
 
 
         // return handName;
-    }
+}
 
     
-}
+
 CardCombos.numOrder = {
     "3": 0,
     "4": 1,

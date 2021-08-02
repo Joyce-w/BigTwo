@@ -24,10 +24,10 @@ function App() {
   /**Keep track of the most curent play */
   const initial_play = {
     numCardsPlayed: 5, cards: [
-      { code: "6C", image: "https://deckofcardsapi.com/static/img/6C.png", images:null, value: "2", suit: "CLUBS" },
-      { code: "5C", image: "https://deckofcardsapi.com/static/img/5C.png", images:null, value: "3", suit: "CLUBS" },
-      { code: "8C", image: "https://deckofcardsapi.com/static/img/8C.png", images:null, value: "8", suit: "CLUBS" },
-      { code: "7C", image: "https://deckofcardsapi.com/static/img/7C.png", images:null, value: "7", suit: "CLUBS" },
+      { code: "6C", image: "https://deckofcardsapi.com/static/img/6C.png", images:null, value: "7", suit: "CLUBS" },
+      { code: "5C", image: "https://deckofcardsapi.com/static/img/5C.png", images:null, value: "8", suit: "CLUBS" },
+      { code: "8C", image: "https://deckofcardsapi.com/static/img/8C.png", images:null, value: "10", suit: "CLUBS" },
+      { code: "7C", image: "https://deckofcardsapi.com/static/img/7C.png", images:null, value: "6", suit: "CLUBS" },
       {code: "9C", image: "https://deckofcardsapi.com/static/img/9C.png", images: null, value: "9", suit: "CLUBS"}
     ],
     placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"
