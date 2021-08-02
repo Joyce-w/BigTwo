@@ -5,17 +5,26 @@ import PlayersContext from './PlayersContext';
 const CardPickerForm = ({handleNewHand}) => {
 
     // get player cards
-    const {isLoading, isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
+    const {isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
 
     const [cardLength, setCardLength] = useState(2)
     let player = isPlayerOne ? playerOne : playerTwo;
 
     // manage state of each possible card selected
 
-    const [checkedState, setCheckedState] = useState(() =>
-      isPlayerOne ? playerOne.length : playerTwo.length
-    );        
+    //return array of t/f depending on player's card length
+    const [checkedState, setCheckedState] = useState([])
+    
+    useEffect(() => {
+      console.log('player is determiend')
+      console.log(player)
+      setCheckedState(new Array(26).fill(false))
+      
+    },[player])
+  
 
+  
+  
 
     // handle logic when a card is selected
     const [currSelection, setCurrSelection] = useState([])
@@ -45,7 +54,7 @@ const CardPickerForm = ({handleNewHand}) => {
     }
 
     // get current players cards
-    let displayPlayerHand = playerOne && playerTwo ?
+    let displayPlayerHand = player ?
     <fieldset className="CardPickForm-playerHand" >
     <legend>Choose your play</legend>
             {player.map((card, idx) => {
@@ -68,54 +77,7 @@ const CardPickerForm = ({handleNewHand}) => {
     
     return (
         <form onSubmit={handleSubmit}>
-        {/* <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="cardPick"
-              value="1"
-              onChange={handleChange}
-              
-            />
-            1 card
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="cardPick"
-              value="2"
-              onChange={handleChange}
-            />
-            2 cards
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="cardPick"
-              value="3"
-              onChange={handleChange}
-            />
-            3 cards
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="cardPick"
-              value="5"
-              onChange={handleChange}
-            />
-            5 cards
-          </label>
-        </div>
-        <div>
-        </div>
-         */}
+       
         {displayPlayerHand}
 
         <button className="btn btn-default" type="submit">
