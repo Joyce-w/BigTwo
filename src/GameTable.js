@@ -1,25 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PlayersContext from './PlayersContext';
 import "./GameTable.css"
 
-const GameTable = () => {
+const GameTable = (player,handleChange) => {
     const { isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
 
-    let player = isPlayerOne ? playerOne : playerTwo
-    //displays cards depending on who isCurrentPlayer
-    let display = playerOne && playerTwo ?
-            player.map(card => {
-                 return <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>      
-            }) :
-            <p>Loading player cards...</p>
+        //return array of t/f depending on player's card length
+    const [checkedState, setCheckedState] = useState(new Array(player.length).fill(false));
     
-    
+
     return (
-        <div className="GameTable">
-            {player === playerOne ? <p>Player One's turn!</p> : <p>Player Two's turn!</p>}
-            {display}
-        </div>
+    <fieldset className="CardPickForm-playerHand" >
+        <legend>{isPlayerOne ? 'Player Ones Turn': 'Player Twos Turn'}</legend>
+                {player.map((card, idx) => {
+                    return (
+                        <div  className="card" key={card.code}>
+                            <input
+                                type="checkbox"
+                                id={idx}
+                                name="card"
+                                checked={checkedState[idx]}
+                                onChange={(e) => handleChange(card, idx)}></input>
+                            <label  htmlFor={idx}>
+                                <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>    
+                            </label>
+                        </div>
+                    )
+                })}
+        </fieldset>
     )
+
 }
 
 export default GameTable;

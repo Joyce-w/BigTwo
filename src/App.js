@@ -10,8 +10,7 @@ import HandNewSubmission from './HandleNewHandSubmission';
 import PlayersContext from './PlayersContext';  
 
 function App() {
-  /*Save deckID */
-  const [deckID, setDeckID] = useState();
+
   /*Start with 2 players*/
   const [players, setPlayers] = useState(2);
   /*Split deck of cards amongst two players */
@@ -25,9 +24,7 @@ function App() {
 
   /**Keep track of the most curent play */
   const initial_play = {
-    numCardsPlayed: 0, cards: [
-    ],
-    placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"
+    numCardsPlayed: 0, cards: []
   }
 
   const [currPlay, setCurrPlay] = useState(initial_play)
@@ -46,18 +43,19 @@ function App() {
       setIsLoading(false)
     }
     splitDeck();
-    
   },[])
 
 
+  //updates the current players hand so that the cards that were played are removed
   const updatePlayerHand =(code) =>{
     isPlayerOne ?
     setPlayerOne(playerOne.filter(cards => !code.includes(cards.code))) :
     setPlayerTwo(playerTwo.filter(cards => !code.includes(cards.code)))
-    
   }
+
   //Handle palyers hand submission
   const handleNewHand = (hand) => {
+    console.log(isPlayerOne ? 'PLAYER ONE SUBMITED' : 'PLAYER TWO SUBMITED')
     //check to see if the same amount of cards are played
     let isValidPlay = CardCombos.validCardPlay(currPlay.numCardsPlayed, hand.length)
     
@@ -69,20 +67,15 @@ function App() {
 
       if (hand.length === 1) {
         console.log('hit 1 card')
+        console.log(hand, currPlay)
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-        
+      
           let codes = HandNewSubmission.getPlayerHand(hand)
-
           //update the current player's hand without the card(s) that was played
           updatePlayerHand(codes);
-          
-          //same as line 83
-          // isPlayerOne ?
-          // setPlayerOne(playerOne.filter(cards => !codes.includes(cards.code))) :
-          // setPlayerTwo(playerTwo.filter(cards => !codes.includes(cards.code)))
-          
+
           //switch players
           setIsPlayerOne(false)
         }
