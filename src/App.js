@@ -4,6 +4,8 @@ import './App.css';
 import CardPickerForm from './CardPickerForm'
 import Deck from './Deck';
 import CardCombos from './CardCheck';
+import HandNewSubmission from './HandleNewHandSubmission';
+
 // Context
 import PlayersContext from './PlayersContext';  
 
@@ -22,12 +24,6 @@ function App() {
   const [isPlayerOne, setIsPlayerOne] = useState(true)
 
   /**Keep track of the most curent play */
-
-      // { code: "6C", image: "https://deckofcardsapi.com/static/img/6C.png", images:null, value: "4", suit: "DIAMOND" },
-      // { code: "5C", image: "https://deckofcardsapi.com/static/img/5C.png", images:null, value: "5", suit: "CLUBS" },
-      // { code: "8C", image: "https://deckofcardsapi.com/static/img/8C.png", images:null, value: "6", suit: "CLUBS" },
-      // { code: "7C", image: "https://deckofcardsapi.com/static/img/7C.png", images:null, value: "7", suit: "CLUBS" },
-      // {code: "9C", image: "https://deckofcardsapi.com/static/img/9C.png", images: null, value: "8", suit: "CLUBS"}
   const initial_play = {
     numCardsPlayed: 0, cards: [
     ],
@@ -64,11 +60,21 @@ function App() {
     
     //if valid, check hand for correct combo
     if (isValidPlay) {
+
+      //set current player
+      // isPlayerOne ? playerOne : playerTwo
+
       if (hand.length === 1) {
         console.log('hit 1 card')
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+        
+          let codes = HandNewSubmission.updatePlayerHand(hand)
+          let newHand = playerOne.filter(cards => !codes.includes(cards.code))
+          console.log(newHand)
+          // let newHand = isPlayerOne ?
+          //   playerOne.filter(cards => !codes.includes(cards.code))
         }
         //check to see if hand is higher than currPlay card
         else {
@@ -92,6 +98,7 @@ function App() {
           if (currPlay.cards.length === 0) {
             console.log('hit EMPTY 2 card')
             setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+            console.log(HandNewSubmission.updatePlayerHand(hand))
           }
           //check to see if hand pair is higher than currPlay pair
           else {
@@ -121,12 +128,13 @@ function App() {
           if (currPlay.cards.length === 0) {
             console.log('hit EMPTY 5 card')
             setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+            console.log(HandNewSubmission.updatePlayerHand(hand))
           }
           else {
             console.log('check to see if 5 card if valid')
             //check to see if hand's 5 card is higher than currPlay 
             let res = CardCombos.isHigher5Card(hand, currPlay.cards)
-            console.log(res)
+            return res ? setCurrPlay({ numCardsPlayed: hand.length, cards: hand }) : console.log('not high enough')
           }
 
         }
