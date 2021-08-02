@@ -20,9 +20,17 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   /*Keep track of which player is currently playing */
   const [isPlayerOne, setIsPlayerOne] = useState(true)
+
   /**Keep track of the most curent play */
-  //{code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "HEARTS"}
-  const initial_play = { numCardsPlayed: 0, cards: [], placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"}
+  const initial_play = {
+    numCardsPlayed: 2, cards: [
+      { code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "SPADES"}
+      ,
+      {code: "8D", image: "https://deckofcardsapi.com/static/img/8D.png", images: null, value: "8", suit: "DIAMONDS"}
+    ],
+    placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"
+  }
+
   const [currPlay, setCurrPlay] = useState(initial_play)
 
   //get new deck from API, store deckID in state;
@@ -55,12 +63,15 @@ function App() {
     if (isValidPlay) {
       console.log('valid play')
       if (hand.length === 1) {
+        console.log('hit 1 card')
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
         }
+        //check to see if hand is higher than currPlay card
         else {
-          let isHigher = CardCombos.isHigherSingle(hand, currPlay)
+          let isHigher = CardCombos.isHigherSingle(hand, currPlay.cards)
+          console.log(isHigher)
           if (isHigher) {
             setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
           } else {
@@ -71,13 +82,28 @@ function App() {
     
       //check if valid pair
       else if (hand.length === 2) {
+        console.log('hit 2 card')
         /*check to see if valid 2 card play, update currPlay valid*/
         let isValid = CardCombos.isValidPair(hand);
-        if (isValid) {
-        //add hand if currPlay is empty
-        if (currPlay.cards.length === 0) {
-          setCurrPlay({numCardsPlayed: hand.length, cards: hand})
-        }
+          if (isValid) {
+          //add hand if currPlay is empty
+            if (currPlay.cards.length === 0) {
+            console.log('hit EMPTY 2 card')
+            setCurrPlay({numCardsPlayed: hand.length, cards: hand})
+          }
+          //check to see if hand pair is higher than currPlay pair
+            else {
+              console.log('there is are 2 cards you need to beat')
+            let isHigherPair = CardCombos.isHigherPair(hand, currPlay)
+            console.log(isHigherPair)
+            if (!isHigherPair) {
+              alert('Your hand is not higher than the cards to beat!')
+              //make logic to select again if card is not higher
+              return;
+            } else {
+              setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+            }
+          }
 
           //check to see if higher than prev
           setCurrPlay({numCardsPlayed: hand.length, cards: hand})
@@ -87,18 +113,18 @@ function App() {
 
       }
         
-      /*check for valid five-card, update currPlay valid*/
-      else if (hand.length === 5) {
-        let isValid = CardCombos.isValidFiveCard(hand)
-        if (isValid) {
-          //check to see if higher than prev
-          setCurrPlay({numCardsPlayed: hand.length, cards: hand})          
-        } else {
-          alert('invalid 5 card!')          
-        }
+      // /*check for valid five-card, update currPlay valid*/
+      // else if (hand.length === 5) {
+      //   let isValid = CardCombos.isValidFiveCard(hand)
+      //   if (isValid) {
+      //     //check to see if higher than prev
+      //     setCurrPlay({numCardsPlayed: hand.length, cards: hand})          
+      //   } else {
+      //     alert('invalid 5 card!')          
+      //   }
 
 
-      }
+      // }
     }
   } 
     //check prev hand to see who is higher
@@ -112,7 +138,7 @@ function App() {
         <div className="Table">
           <p>Current Hand to Beat</p>
           {currPlay.cards.map(card => {
-            return  <img alt={card.code} src={card.image}></img>
+            return <img key={ card.code } alt={card.code} src={card.image}></img>
           })}
         </div>
 

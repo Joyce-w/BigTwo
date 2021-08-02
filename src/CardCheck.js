@@ -25,7 +25,6 @@ class CardCombos {
 
     /**Handles pair card play */
     static isValidPair = (hand) => {
-        console.log(hand)
         if (hand[0].value === hand[1].value) {
             console.log('they are the same value!')
             return true;
@@ -48,29 +47,58 @@ class CardCombos {
     }
     
     /*check to see if single card higher than currPlay's card */
-    static isHigherSingle = (hand, currHand) => {
-
+    static isHigherSingle = (hand, currPlay) => {
+        console.log(hand, currPlay)
         let handNumVal = CardCombos.numOrder[hand[0].value];
         let handSuitVal = CardCombos.suitOrder.indexOf(hand[0].suit);
-        let currPlayNumVal = CardCombos.numOrder[currHand.cards[0].value]
-        let currPlaySuitVal = CardCombos.suitOrder.indexOf(currHand.cards[0].suit);
-        // console.log('hand', handNumVal, 'curr',currPlayNumVal)
-        // console.log('hand suit', handSuitVal, 'curr suit',currPlaySuitVal)
+        let currPlayNumVal = CardCombos.numOrder[currPlay[0].value]
+        let currPlaySuitVal = CardCombos.suitOrder.indexOf(currPlay[0].suit);
+        console.log('curr',currPlayNumVal,'curr suit',currPlaySuitVal)
+        console.log('hand', handNumVal, 'hand suit', handSuitVal)
+        
         
         //if hand value is the same & suit is higher, true     
-        if(handNumVal >= currPlayNumVal && handSuitVal > currPlaySuitVal){
-            return true;
+        if (handNumVal >= currPlayNumVal) {
+            console.log('hand is greater/ equal to currPlay')
+            if (handSuitVal >= currPlaySuitVal) {
+                console.log('hand val greater than suit')
+                return true;
+            }
+                console.log('currPlay suit is higher in suit')
+                return false;
+        } else {
+            console.log('hand is lower than currPlay')
+            return false;            
         }
-        else if (handNumVal > currPlayNumVal && handSuitVal < currPlaySuitVal)  {
-            return true;
-        }
-        else {
-            return false;
-        }
+
+
+        //same as lin1 61 to 64
+        // if(handNumVal >= currPlayNumVal && handSuitVal > currPlaySuitVal){
+        //     return true;
+
+        // }
+        // else if (handNumVal > currPlayNumVal && handSuitVal < currPlaySuitVal)  {
+        //     return true;
+        // }
+        // else {
+        //     return false;
+        // }
     }
  
     /*check if pair higher than currPlay's pair*/
+    static isHigherPair = (hand, currPlay) => {
+        /*Get highest card for hand & currPlay based off CardCombos.suitOrder number. Already know the value is the same for each respective hand so no need to compare card values */
+        let highHandCard = CardCombos.suitOrder.indexOf(hand[0].suit) > CardCombos.suitOrder.indexOf(hand[1].suit) ? hand[0] : hand[1];
 
+        /*get highest card for currPlay based off suit*/        
+        let highcurrPlayCard = CardCombos.suitOrder.indexOf(currPlay.cards[0].suit) > CardCombos.suitOrder.indexOf(currPlay.cards[1].suit) ? currPlay.cards[0] : currPlay.cards[1];
+        
+        console.log(highHandCard, highcurrPlayCard)
+        //If hand num is higher than currPlay , compare suit using isHigherSingle logic from above
+        let isHandHigher =CardCombos.isHigherSingle([highHandCard], [highcurrPlayCard])
+        return isHandHigher;
+
+    }
 
     /*check if 5 card higher than currPlay's 5card*/
 
