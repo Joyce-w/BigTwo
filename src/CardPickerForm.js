@@ -3,24 +3,24 @@ import'./CardPickerForm.css';
 import PlayersContext from './PlayersContext';
 
 const CardPickerForm = ({handleNewHand}) => {
-
     // get player cards
     const {isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
 
-    const [cardLength, setCardLength] = useState(2)
-    let player = isPlayerOne ? playerOne : playerTwo;
+  const [cardLength, setCardLength] = useState(2)
+  
+  const [player, setPlayer] = useState(isPlayerOne ? playerOne : playerTwo)
 
     // manage state of each possible card selected
 
     //return array of t/f depending on player's card length
-    const [checkedState, setCheckedState] = useState([])
-    
-    useEffect(() => {
-      console.log('player is determiend')
-      console.log(player)
-      setCheckedState(new Array(26).fill(false))
+  const [checkedState, setCheckedState] = useState(new Array(player.length).fill(false));
+  console.log(playerOne.length)
+  // useEffect(() => {
+  //     console.log('player is determiend')
+  //     console.log(player)
+  //     setCheckedState(new Array(isPlayerOne ? playerOne.length : playerTwo.length).fill(false))
       
-    },[player])
+  //   },[player])
   
 
   
@@ -56,7 +56,7 @@ const CardPickerForm = ({handleNewHand}) => {
     // get current players cards
     let displayPlayerHand = player ?
     <fieldset className="CardPickForm-playerHand" >
-    <legend>Choose your play</legend>
+    <legend>{isPlayerOne ? 'Player Ones Turn': 'Player Twos Turn'}</legend>
             {player.map((card, idx) => {
                 return (
                     <div  className="card" key={card.code}>

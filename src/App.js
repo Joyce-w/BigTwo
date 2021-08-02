@@ -32,27 +32,30 @@ function App() {
 
   const [currPlay, setCurrPlay] = useState(initial_play)
 
-  //get new deck from API, store deckID in state;
-  useEffect(() => {
-    const newDeck = async() => {
-      let {deck_id} = await Deck.shuffleNewCard();
-      setDeckID(deck_id);
-    }
-    newDeck();
-  },[])
-  
-  /*split deck when a new deckID is obtained, store in state*/
+
+  /*get a deck id and then split the deck, store in state*/
   useEffect(() => {
     //set state so all player cards are stored
     const splitDeck = async () => {
-      let {p1, p2} = await Deck.splitDeck(players, deckID)
+      let {deck_id} = await Deck.shuffleNewCard();
+      let { p1, p2 } = await Deck.splitDeck(players, deck_id)
+
       setPlayerOne(p1.data.cards)
       setPlayerTwo(p2.data.cards)
+      //update to make sure api call is done
+      setIsLoading(false)
     }
     splitDeck();
-    setIsLoading(false)
-  },[deckID])
+    
+  },[])
 
+
+  const updatePlayerHand =(code) =>{
+    isPlayerOne ?
+    setPlayerOne(playerOne.filter(cards => !code.includes(cards.code))) :
+    setPlayerTwo(playerTwo.filter(cards => !code.includes(cards.code)))
+    
+  }
   //Handle palyers hand submission
   const handleNewHand = (hand) => {
     //check to see if the same amount of cards are played
@@ -70,21 +73,20 @@ function App() {
         if (currPlay.cards.length === 0) {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
         
-          let codes = HandNewSubmission.updatePlayerHand(hand)
-          console.log(codes)
-          let newHand = playerOne.filter(cards => !codes.includes(cards.code))
+          let codes = HandNewSubmission.getPlayerHand(hand)
 
           //update the current player's hand without the card(s) that was played
-          isPlayerOne ?
-          setPlayerOne(playerOne.filter(cards => !codes.includes(cards.code))) :
-          setPlayerTwo(playerTwo.filter(cards => !codes.includes(cards.code)))
+          updatePlayerHand(codes);
           
-
-
-
-
-
+          //same as line 83
+          // isPlayerOne ?
+          // setPlayerOne(playerOne.filter(cards => !codes.includes(cards.code))) :
+          // setPlayerTwo(playerTwo.filter(cards => !codes.includes(cards.code)))
+          
+          //switch players
+          setIsPlayerOne(false)
         }
+
         //check to see if hand is higher than currPlay card
         else {
           let isHigher = CardCombos.isHigherSingle(hand, currPlay.cards)
