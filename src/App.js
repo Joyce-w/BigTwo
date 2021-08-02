@@ -19,7 +19,7 @@ function App() {
   const [playerTwo, setPlayerTwo] = useState();
 
   /**Check to see if Api is loading */
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   /*Keep track of which player is currently playing */
   const [isPlayerOne, setIsPlayerOne] = useState(true)
 
@@ -71,10 +71,19 @@ function App() {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
         
           let codes = HandNewSubmission.updatePlayerHand(hand)
+          console.log(codes)
           let newHand = playerOne.filter(cards => !codes.includes(cards.code))
-          console.log(newHand)
-          // let newHand = isPlayerOne ?
-          //   playerOne.filter(cards => !codes.includes(cards.code))
+
+          //update the current player's hand without the card(s) that was played
+          isPlayerOne ?
+          setPlayerOne(playerOne.filter(cards => !codes.includes(cards.code))) :
+          setPlayerTwo(playerTwo.filter(cards => !codes.includes(cards.code)))
+          
+
+
+
+
+
         }
         //check to see if hand is higher than currPlay card
         else {
@@ -161,7 +170,10 @@ function App() {
         </div>
 
         {/* Have player pick the number of cards to play */}
-        <CardPickerForm handleNewHand={ handleNewHand }/>
+        {
+          !isLoading ? <CardPickerForm handleNewHand={ handleNewHand }/> :<p>Loading...</p>
+        }
+        
 
 
         {/* <GameTable/> */}

@@ -5,14 +5,17 @@ import PlayersContext from './PlayersContext';
 const CardPickerForm = ({handleNewHand}) => {
 
     // get player cards
-    const {isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
-    
+    const {isLoading, isPlayerOne, playerOne, playerTwo } = useContext(PlayersContext)
+
+    const [cardLength, setCardLength] = useState(2)
     let player = isPlayerOne ? playerOne : playerTwo;
 
     // manage state of each possible card selected
+
     const [checkedState, setCheckedState] = useState(() =>
-        new Array(26).fill(false)
-        );        
+      isPlayerOne ? playerOne.length : playerTwo.length
+    );        
+
 
     // handle logic when a card is selected
     const [currSelection, setCurrSelection] = useState([])
