@@ -23,6 +23,11 @@ class CardCombos {
         }
     }
 
+    /**
+     * Handle whether 2 card are the same value to make a pair 
+     * or 5 cards is valid to make a poker hand 
+     * */
+
     /**Handles pair card play */
     static isValidPair = (hand) => {
         if (hand[0].value === hand[1].value) {
@@ -39,16 +44,27 @@ class CardCombos {
         //orders the card from the hand based on value
         let cardValues = hand.map(card => PokerHands.numOrder[card.value]).sort((a, b) => a - b);
         
-        let check5Cards = [PokerHands.isFlush(hand), PokerHands.isStraight(hand), PokerHands.isStraightFlush(hand,cardValues), PokerHands.isFourOfAKind(cardValues), PokerHands.isThreeCard(cardValues)].some(el => el)
+        let check5Cards = [
+            PokerHands.isFlush(hand),
+            PokerHands.isStraight(cardValues),
+            PokerHands.isStraightFlush(hand, cardValues),
+            PokerHands.isFourOfAKind(cardValues),
+            PokerHands.isThreeCard(cardValues)].some(el => el);
 
         console.log('at least one true?', check5Cards)
         return check5Cards ? true : false;
 
     }
     
+    /**
+     * If there is a currPlay (cards to beat), then compare it with the hand that the player picked and check to see if it is higher. 
+     * e.g. currPlay: [5C, 5D] & hand: [6S, 6D]. hand has the higher cards.
+     */
+
     /*check to see if single card higher than currPlay's card */
     static isHigherSingle = (hand, currPlay) => {
         console.log(hand, currPlay)
+
         let handNumVal = CardCombos.numOrder[hand[0].value];
         let handSuitVal = CardCombos.suitOrder.indexOf(hand[0].suit);
         let currPlayNumVal = CardCombos.numOrder[currPlay[0].value]
@@ -70,19 +86,6 @@ class CardCombos {
             console.log('hand is lower than currPlay')
             return false;            
         }
-
-
-        //same as lin1 61 to 64
-        // if(handNumVal >= currPlayNumVal && handSuitVal > currPlaySuitVal){
-        //     return true;
-
-        // }
-        // else if (handNumVal > currPlayNumVal && handSuitVal < currPlaySuitVal)  {
-        //     return true;
-        // }
-        // else {
-        //     return false;
-        // }
     }
  
     /*check if pair higher than currPlay's pair*/
@@ -101,6 +104,43 @@ class CardCombos {
     }
 
     /*check if 5 card higher than currPlay's 5card*/
+    static isHigher5Card = (hand, currPlay) => {
+        //Identify the hand of the 5 card
+        let handName = PokerHands.identifyHand(hand);
+        if (handName === 'threeKind') {
+            handName = PokerHands.specify3Card(hand);
+        }
+        console.log('hand',handName);
+
+        //identify currPlay poker hand name
+        let currPlayName = PokerHands.identifyHand(currPlay);
+        if (currPlayName === 'threeKind') {
+            currPlayName = PokerHands.specify3Card(currPlay);
+        }
+        console.log('currplay', currPlayName);
+
+        //Use number scoring to identify 
+        let handScore = CardCombos.fiveCardScore[handName];
+        let currPlayScore = CardCombos.fiveCardScore[currPlayName];
+
+        /*currPlay cards are higher points than the hand. 
+        *Lower the number on CardCombos.fiveCardScore the higher the value
+       */
+        if (currPlayScore < handScore) {
+            console.log('current play ishigher')
+            return false;
+        }
+        //currPlay cards are lower points than the hand
+        else if (handScore < currPlayScore) {
+            console.log('hand play is higher')
+            return true;
+        }
+        // scores are equal, identify which is higher
+
+
+
+        // return handName;
+    }
 
     
 }
@@ -122,5 +162,23 @@ CardCombos.numOrder = {
         
 CardCombos.suitOrder = ["DIAMONDS", "CLUBS", "HEARTS", "SPADES"];
 
-    
+CardCombos.pokerRank = [
+    'straightFlush',
+    'fourKind',
+    'fullHouse',
+    'flush',
+    'straight',
+    'threeKind'
+]
+
+CardCombos.fiveCardScore = {
+    'straightFlush': 0,
+    'fourKind': 1,
+    'fullHouse':2,
+    'flush': 3,
+    'straight' : 4,
+    'threeOfAKind': 5    
+}
+
+
 export default CardCombos;

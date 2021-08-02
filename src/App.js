@@ -23,10 +23,12 @@ function App() {
 
   /**Keep track of the most curent play */
   const initial_play = {
-    numCardsPlayed: 2, cards: [
-      { code: "8H", image: "https://deckofcardsapi.com/static/img/8H.png", images: null, value: "8", suit: "SPADES"}
-      ,
-      {code: "8D", image: "https://deckofcardsapi.com/static/img/8D.png", images: null, value: "8", suit: "DIAMONDS"}
+    numCardsPlayed: 5, cards: [
+      { code: "6C", image: "https://deckofcardsapi.com/static/img/6C.png", images:null, value: "2", suit: "CLUBS" },
+      { code: "5C", image: "https://deckofcardsapi.com/static/img/5C.png", images:null, value: "3", suit: "CLUBS" },
+      { code: "8C", image: "https://deckofcardsapi.com/static/img/8C.png", images:null, value: "8", suit: "CLUBS" },
+      { code: "7C", image: "https://deckofcardsapi.com/static/img/7C.png", images:null, value: "7", suit: "CLUBS" },
+      {code: "9C", image: "https://deckofcardsapi.com/static/img/9C.png", images: null, value: "9", suit: "CLUBS"}
     ],
     placeholder: "https://p.kindpng.com/picc/s/8-89401_ace-playing-card-png-ace-playing-cards-png.png"
   }
@@ -85,15 +87,15 @@ function App() {
         console.log('hit 2 card')
         /*check to see if valid 2 card play, update currPlay valid*/
         let isValid = CardCombos.isValidPair(hand);
-          if (isValid) {
+        if (isValid) {
           //add hand if currPlay is empty
-            if (currPlay.cards.length === 0) {
+          if (currPlay.cards.length === 0) {
             console.log('hit EMPTY 2 card')
-            setCurrPlay({numCardsPlayed: hand.length, cards: hand})
+            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
           }
           //check to see if hand pair is higher than currPlay pair
-            else {
-              console.log('there is are 2 cards you need to beat')
+          else {
+            console.log('there is are 2 cards you need to beat')
             let isHigherPair = CardCombos.isHigherPair(hand, currPlay)
             console.log(isHigherPair)
             if (!isHigherPair) {
@@ -104,30 +106,38 @@ function App() {
               setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
             }
           }
-
-          //check to see if higher than prev
-          setCurrPlay({numCardsPlayed: hand.length, cards: hand})
-        } else {
-          alert('invalid 2 pair!')          
         }
-
+        else {
+          alert('invalid 2 pair!')
+        }
       }
-        
-      // /*check for valid five-card, update currPlay valid*/
-      // else if (hand.length === 5) {
-      //   let isValid = CardCombos.isValidFiveCard(hand)
-      //   if (isValid) {
-      //     //check to see if higher than prev
-      //     setCurrPlay({numCardsPlayed: hand.length, cards: hand})          
-      //   } else {
-      //     alert('invalid 5 card!')          
-      //   }
+         
+      /*check for valid five-card, update currPlay valid*/
+      else if (hand.length === 5) {
+        let isValid = CardCombos.isValidFiveCard(hand)
+        console.log('this is the 5 card logic')
+        if (isValid) {
+          //add hand if currPlay is empty
+          if (currPlay.cards.length === 0) {
+            console.log('hit EMPTY 5 card')
+            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+          }
+          else {
+            console.log('check to see if 5 card if valid')
+            //check to see if hand's 5 card is higher than currPlay 
+            let res = CardCombos.isHigher5Card(hand, currPlay.cards)
+            console.log(res)
+          }
 
+        }
+      }
+      //Invalid hand, pick again!
+      alert('Invalid hand, pick again!')
+      return;
 
-      // }
+      // End of isValidPlay()
     }
-  } 
-    //check prev hand to see who is higher
+  }
 
 
   return (
@@ -150,6 +160,7 @@ function App() {
     </div>
     </PlayersContext.Provider>    
   );
-}
 
+  //end of class
+}
 export default App;
