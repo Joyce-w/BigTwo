@@ -22,7 +22,6 @@ const CurrentPlayersHand = () => {
     //updates state to correct player when isPlayerone is changed
     useEffect(() => {
         setPlayer(isPlayerOne ? playerOne : playerTwo)
-        console.log(isPlayerOne ? 'player one currently' : 'player two currently')
     },[isPlayerOne])
   
     // Used to hold the data of the currently selected cards

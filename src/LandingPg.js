@@ -17,7 +17,7 @@ function LandingPg() {
                     <li><b>How to play:</b>
                         <br></br>
                         Player one starts by choosing a combination. Once played, player two must choose the same number of cards that was previously played
-                        and beat the current hand displayed. Pressing pass will reset the current hand and the next player decides on the new combination.</li>
+                        and beat the current hand displayed. Passing your turn will reset the current hand and the next player decides on the new combination.</li>
                     
                     
                     <li><b>Combinations:</b>
@@ -36,7 +36,9 @@ function LandingPg() {
                     <li>
                         <b>About This App:</b>
                         <br></br>
-                        This app was built by <a href="https://www.linkedin.com/in/hello-joycewong/">Joyce</a> with <a href="https://reactjs.org/">React </a>
+                        This app was built by <a href="https://www.linkedin.com/in/hello-joycewong/">Joyce </a> 
+                         with <a href="https://reactjs.org/">React</a>, decorated with pure CSS
+                        and deployed on <a href="https://www.heroku.com">Heroku</a>.
                         <br></br>
                         For <a href="https://mintbean.io/meets?sort=upcoming">Mintbean's</a> Hackathon!
                         

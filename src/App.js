@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom';
 import GamePlay from './GamePlay';
 import LandingPg from './LandingPg';
 import './App.css';
-import Deck from './Deck';
-import CardCombos from './CardCheck';
-
-// Context
-import PlayersContext from './PlayersContext';  
-import CurrentPlayersHand from './CurrentPlayersHand';
 
 function App() {
 
