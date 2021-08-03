@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Router, Link } from 'react-router-dom';
 import './GamePlay.css';
 import Deck from './Deck';
 import CardCombos from './CardCheck';
@@ -8,7 +8,6 @@ import CardCombos from './CardCheck';
 import PlayersContext from './PlayersContext';  
 import CurrentPlayersHand from './CurrentPlayersHand';
 
-let warning;
 
 function GamePlay() {
 
@@ -66,7 +65,8 @@ function GamePlay() {
     if (cardsRemaining === 0) {
       isPlayerOne ? alert('PLAYER ONE WON!') : alert('PLAYER TWO WON!')
       //render wining screen?
-      return;
+      
+      return <Link to ="/">Return Home</Link>;
     }
   }
   //updates the current players hand so that the cards that were played are removed
@@ -85,7 +85,6 @@ function GamePlay() {
     //Updates the player's hand in the state
     const getPlayerHand = (hand) => {
         let codes = hand.map(card => card.code)
-        console.log(codes)
         return codes
     } 
 
@@ -116,23 +115,15 @@ function GamePlay() {
     if (isValidPlay) {
 
       if (hand.length === 1) {
-        console.log('hit 1 card')
-        console.log(hand, currPlay)
-
-        
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
           updateCurrPlayAndPlayerState(hand)
         }
-
         //check to see if hand is higher than currPlay card
         else {
           let isHigher = CardCombos.isHigherSingle(hand, currPlay.cards)
-          console.log(isHigher)
-
           if (isHigher) {
             updateCurrPlayAndPlayerState(hand)
-            
           } else {
             setIsPlayerOne(isPlayerOne)
           }
@@ -141,23 +132,17 @@ function GamePlay() {
     
       //check if valid pair
       else if (hand.length === 2) {
-        console.log(hand)
-        console.log('hit 2 card')
-
         /*check to see if valid 2 card play, update currPlay valid*/
         let isValid = CardCombos.isValidPair(hand);
-
         if (isValid) {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
-          console.log('hit EMPTY 2 card')
           updateCurrPlayAndPlayerState(hand)
           }
           //check to see if hand pair is higher than currPlay pair
           else {
             console.log('there is are 2 cards you need to beat')
             let isHigherPair = CardCombos.isHigherPair(hand, currPlay)
-            console.log(isHigherPair)
 
             if (isHigherPair) {
               updateCurrPlayAndPlayerState(hand)
@@ -172,15 +157,12 @@ function GamePlay() {
       /*check for valid five-card, update currPlay valid*/
       else if (hand.length === 5) {
         let isValid = CardCombos.isValidFiveCard(hand)
-        console.log('this is the 5 card logic')
         if (isValid) {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
-            console.log('hit EMPTY 5 card')
             updateCurrPlayAndPlayerState(hand)
           }
           else {
-            console.log('check to see if 5 card if valid')
             //check to see if hand's 5 card is higher than currPlay 
             let isHigherFive = CardCombos.isHigher5Card(hand, currPlay.cards)
 
@@ -193,16 +175,13 @@ function GamePlay() {
           }
         }
       }
+
       //Invalid hand, pick again!
-
-        console.log(isPlayerOne ? 'PLAYER ONE TURN' : 'PLAYER TWO TURN')
-
-      return
-
+      return;
       // End of isValidPlay()
     }
     
-    warning = <p>you need to play ${currPlay.numCardsPlayed} cards</p>
+    alert(`You need to play ${currPlay.numCardsPlayed} cards!`)
     setIsPlayerOne(isPlayerOne)
   }
 
@@ -220,7 +199,6 @@ function GamePlay() {
             return <img className="App-cards" key={ card.code } alt={card.code} src={card.image}></img>
           })}
         </div>
-          {warning? warning : null}
         {/* Have player pick the number of cards to play */}
         {
           !isLoading ? <CurrentPlayersHand/> :<p>Loading...</p>

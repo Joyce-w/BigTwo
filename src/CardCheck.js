@@ -8,7 +8,6 @@ class CardCombos {
     /**Make sure the number of cards the player plays is equal to the currHand*/
     static validCardPlay = (currPlayCards, newHandCount) => {
         let validNumCards = [1, 2, 5];
-        console.log(currPlayCards, newHandCount)
         //if currPlay is empty & newHandCount is not & has valid cards, valid play
         if (currPlayCards === 0 && newHandCount !== 0 && validNumCards.includes(newHandCount)) {
             return true;
@@ -29,10 +28,8 @@ class CardCombos {
     /**Handles pair card play */
     static isValidPair = (hand) => {
         if (hand[0].value === hand[1].value) {
-            console.log('they are the same value!')
             return true;
         } else {
-            console.log('they are not a pair')
             return false
         }
     }
@@ -49,7 +46,6 @@ class CardCombos {
             PokerHands.isFourOfAKind(cardValues),
             PokerHands.isThreeCard(cardValues)].some(el => el);
 
-        console.log('at least one true?', check5Cards)
         return check5Cards ? true : false;
 
     }
@@ -67,25 +63,18 @@ class CardCombos {
         let handSuitVal = CardCombos.suitOrder.indexOf(hand[0].suit);
         let currPlayNumVal = CardCombos.numOrder[currPlay[0].value]
         let currPlaySuitVal = CardCombos.suitOrder.indexOf(currPlay[0].suit);
-        console.log('curr',currPlayNumVal,'curr suit',currPlaySuitVal)
-        console.log('hand', handNumVal, 'hand suit', handSuitVal)
-        
         
         //if hand value is the same & suit is higher, true     
         if (handNumVal > currPlayNumVal) {
-            console.log('hand is greater/ equal to currPlay')
             return true;
         }
         else if (handNumVal === currPlayNumVal) {
             if (handSuitVal >= currPlaySuitVal) {
-                console.log('hand val greater than suit')
                 return true;
             } else {
-                console.log('currPlay val is higher in suit')
                 return false;                
             }            
         } else {
-            console.log('hand is lower than currPlay')
             return false;            
         }
     }
@@ -119,7 +108,6 @@ class CardCombos {
         if (currPlayName === 'threeKind') {
             currPlayName = PokerHands.specify3Card(currPlay);
         }
-        console.log('currplay', currPlayName);
 
         //Use number scoring to identify 
         let handScore = CardCombos.fiveCardScore[handName];
@@ -129,7 +117,6 @@ class CardCombos {
         *Lower the number on CardCombos.fiveCardScore the higher the value
        */
         
-        console.log('currPlay',currPlayScore , 'hand',handScore)
         if (currPlayScore < handScore) {
             console.log('current play ishigher')
             return false;
