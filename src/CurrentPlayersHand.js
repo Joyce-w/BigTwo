@@ -37,7 +37,7 @@ const CurrentPlayersHand = () => {
         
         //updates the state with cards the the player is selecting
         const updateHand = (cards, i) => {
-            console.log(player[i])
+        //     console.log(player[i])
             /**If card is selected, upate to currSelection, if card already present, remove it */
             setCurrSelection(currSelection =>
                 cards[i]

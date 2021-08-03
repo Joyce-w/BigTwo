@@ -57,7 +57,6 @@ class CardCombos {
 
     /*check to see if single card higher than currPlay's card */
     static isHigherSingle = (hand, currPlay) => {
-        console.log(hand, currPlay)
 
         let handNumVal = CardCombos.numOrder[hand[0].value];
         let handSuitVal = CardCombos.suitOrder.indexOf(hand[0].suit);
@@ -87,7 +86,6 @@ class CardCombos {
         /*get highest card for currPlay based off suit*/        
         let highcurrPlayCard = CardCombos.suitOrder.indexOf(currPlay.cards[0].suit) > CardCombos.suitOrder.indexOf(currPlay.cards[1].suit) ? currPlay.cards[0] : currPlay.cards[1];
         
-        console.log(highHandCard, highcurrPlayCard)
         //If hand num is higher than currPlay , compare suit using isHigherSingle logic from above
         let isHandHigher =CardCombos.isHigherSingle([highHandCard], [highcurrPlayCard])
         return isHandHigher;
@@ -101,7 +99,6 @@ class CardCombos {
         if (handName === 'threeKind') {
             handName = PokerHands.specify3Card(hand);
         }
-        console.log('hand',handName);
 
         //identify currPlay poker hand name
         let currPlayName = PokerHands.identifyHand(currPlay);
@@ -118,12 +115,10 @@ class CardCombos {
        */
         
         if (currPlayScore < handScore) {
-            console.log('current play ishigher')
             return false;
         }
         //currPlay cards are lower points than the hand
         else if (handScore < currPlayScore) {
-            console.log('hand play is higher')
             return true;
         }
 

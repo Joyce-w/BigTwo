@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Router, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import './GamePlay.css';
 import Deck from './Deck';
 import CardCombos from './CardCheck';
-
+import LandingPg from './LandingPg';
 // Context
 import PlayersContext from './PlayersContext';  
 import CurrentPlayersHand from './CurrentPlayersHand';
@@ -66,7 +66,12 @@ function GamePlay() {
       isPlayerOne ? alert('PLAYER ONE WON!') : alert('PLAYER TWO WON!')
       //render wining screen?
       
-      return <Link to ="/">Return Home</Link>;
+      return (
+                <Route exact path="/">
+          <LandingPg />          
+        </Route>
+
+      )
     }
   }
   //updates the current players hand so that the cards that were played are removed
@@ -90,7 +95,6 @@ function GamePlay() {
 
   //Handle changes when player passes their turn
   const handlePass = () => {
-    console.log(isPlayerOne ? 'player one clicked pass' : 'player two clicked pass')
     setIsPlayerOne(!isPlayerOne)
     setPasses((passes) => isNewRound(passes + 1))
   }
@@ -99,7 +103,6 @@ function GamePlay() {
   const isNewRound = (passCount) => {
     setPasses(passCount)
     //if both players passes, clear currPlay. 
-    console.log(passCount)
     if ( passCount === 1) {
       setPasses(0)
       setCurrPlay(initial_play)
@@ -141,7 +144,6 @@ function GamePlay() {
           }
           //check to see if hand pair is higher than currPlay pair
           else {
-            console.log('there is are 2 cards you need to beat')
             let isHigherPair = CardCombos.isHigherPair(hand, currPlay)
 
             if (isHigherPair) {
@@ -181,7 +183,6 @@ function GamePlay() {
       // End of isValidPlay()
     }
     
-    alert(`You need to play ${currPlay.numCardsPlayed} cards!`)
     setIsPlayerOne(isPlayerOne)
   }
 
