@@ -1,6 +1,11 @@
 .App {
   text-align: center;
   margin: 2em 4em;
+  color:#8f9481;
+}
+
+.App h1{
+  color:#B2B8A3;
 }
 /* Displays the current hand of cards to beat */
 .App-CurrentHand {

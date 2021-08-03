@@ -1,0 +1,20 @@
+.App {
+    text-align: center;
+    margin: 2em 4em;
+    color: #8f9481;
+}
+
+.App h1 {
+    color: #B2B8A3;
+}
+
+/* Displays the current hand of cards to beat */
+.App-CurrentHand {
+    height: 300px;
+    border: 1px solid #F4C7AB;
+    border-radius: 15px;
+}
+
+.App-CurrentHand img {
+    width: 9em;
+}

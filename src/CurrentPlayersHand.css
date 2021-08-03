@@ -33,7 +33,7 @@
     color:#B2B8A3;
 }
 :checked + label img {
-    border: 3px solid #B2B8A3;
+    border: 3px solid #b2b8a3e1;
     border-radius: 10px;
 }
 

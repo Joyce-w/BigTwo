@@ -1,0 +1,18 @@
+.LandingPg{
+  text-align: center;
+  margin: 2em 4em;
+  color:#808574;
+  border: 1px solid black;
+}
+
+.LandingPg-instructions{
+    border: 1px solid rgb(201, 76, 76);
+    margin: 0 20%;
+    font-size: larger;
+    
+}
+.LandingPg-instructions li{
+    list-style: none;
+}
+
+
