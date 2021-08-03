@@ -48,7 +48,7 @@ const CurrentPlayersHand = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('currSelection', currSelection)
-        
+    
         handleNewHand(currSelection)
 
     }

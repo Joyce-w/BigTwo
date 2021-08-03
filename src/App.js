@@ -57,20 +57,37 @@ function App() {
 
     //switch players
     setIsPlayerOne(!isPlayerOne)
+    
+  }
+
+  //check for win
+  const checkForWin=(player,code) =>{
+    let cardsRemaining = player.filter(cards => !code.includes(cards.code)).length
+    if (cardsRemaining === 0) {
+      isPlayerOne ? alert('PLAYER ONE WON!') : alert('PLAYER TWO WON!')
+      //render wining screen?
+      return;
+    }
   }
   //updates the current players hand so that the cards that were played are removed
-  const updatePlayerHand =(code) =>{
+  const updatePlayerHand = (code) => {
+    //check for win
+    isPlayerOne ?
+    checkForWin(playerOne, code):
+    checkForWin(playerTwo, code)
+    
+    //update player's hand
     isPlayerOne ?
     setPlayerOne(playerOne.filter(cards => !code.includes(cards.code))) :
     setPlayerTwo(playerTwo.filter(cards => !code.includes(cards.code)))
   }
+
 
   //Handle changes when player passes their turn
   const handlePass = () => {
     console.log(isPlayerOne ? 'player one clicked pass' : 'player two clicked pass')
     setIsPlayerOne(!isPlayerOne)
     setPasses((passes) => isNewRound(passes + 1))
-
   }
 
   //if both players pass than goes back to the current Player and they can use new hand
