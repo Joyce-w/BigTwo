@@ -66,9 +66,6 @@ const CurrentPlayersHand = () => {
         <div className="CardPickForm">
             
             <form className="CardPickForm-form" onSubmit={handleSubmit}>
-                <button className="Submit" type="submit"> Play Cards </button>
-                or
-                <button onClick={handlePass}>Pass Your Turn</button>
 
                 <fieldset className="CardPickForm-playerHand" >
                     <legend>{isPlayerOne ? <b>Player Ones Turn</b>: <b>Player Twos Turn</b>}</legend>
@@ -88,6 +85,9 @@ const CurrentPlayersHand = () => {
                             )
                         })}
                 </fieldset>
+                <button className="Submit" type="submit"> Play Cards </button>
+                or
+                <button onClick={handlePass}>Pass Your Turn</button>
 
         </form>
       </div>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-// import { Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './GamePlay.css';
 import Deck from './Deck';
 import CardCombos from './CardCheck';
@@ -7,6 +7,8 @@ import CardCombos from './CardCheck';
 // Context
 import PlayersContext from './PlayersContext';  
 import CurrentPlayersHand from './CurrentPlayersHand';
+
+let warning;
 
 function GamePlay() {
 
@@ -100,7 +102,6 @@ function GamePlay() {
     //if both players passes, clear currPlay. 
     console.log(passCount)
     if ( passCount === 1) {
-      console.log('RESET CARDS')
       setPasses(0)
       setCurrPlay(initial_play)
     }
@@ -108,7 +109,6 @@ function GamePlay() {
 
   //Handle palyers hand submission
   const handleNewHand = (hand) => {
-    console.log(isPlayerOne ? 'PLAYER ONE SUBMITED' : 'PLAYER TWO SUBMITED')
     //check to see if the same amount of cards are played
     let isValidPlay = CardCombos.validCardPlay(currPlay.numCardsPlayed, hand.length)
     
@@ -198,8 +198,12 @@ function GamePlay() {
         console.log(isPlayerOne ? 'PLAYER ONE TURN' : 'PLAYER TWO TURN')
 
       return
+
       // End of isValidPlay()
     }
+    
+    warning = <p>you need to play ${currPlay.numCardsPlayed} cards</p>
+    setIsPlayerOne(isPlayerOne)
   }
 
 
@@ -216,7 +220,7 @@ function GamePlay() {
             return <img className="App-cards" key={ card.code } alt={card.code} src={card.image}></img>
           })}
         </div>
-
+          {warning? warning : null}
         {/* Have player pick the number of cards to play */}
         {
           !isLoading ? <CurrentPlayersHand/> :<p>Loading...</p>

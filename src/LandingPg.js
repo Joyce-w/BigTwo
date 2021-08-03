@@ -30,6 +30,8 @@ function LandingPg() {
                         (Lowest)3, 4, 5, 6, 7, 8, 8, 9, 10, J, Q, K, A, 2 (Highest)
                         <br></br>
                         (Lowest) ♦, ♣ , ♥, ♠ (Highest)
+                        <br></br>
+                        (Lowest) Three of a Kind, Straight, Flush, Full House, Four of A Kind, Straight Flush(Highest)
                     </li>
                     
                     {/* App information */}

@@ -5,7 +5,7 @@ A card game called Big Two for Mintbean.io's Hackathon. Built with React, JS, CS
 
 ### Big Two Preview
 
-[Big Two Preview](BigTwoPreview.gif)
+![Big Two Preview](BigTwoPreview.gif)
 
 ### Installation and Setup Instructions
 
