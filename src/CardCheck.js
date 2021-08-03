@@ -72,14 +72,18 @@ class CardCombos {
         
         
         //if hand value is the same & suit is higher, true     
-        if (handNumVal >= currPlayNumVal) {
+        if (handNumVal > currPlayNumVal) {
             console.log('hand is greater/ equal to currPlay')
+            return true;
+        }
+        else if (handNumVal === currPlayNumVal) {
             if (handSuitVal >= currPlaySuitVal) {
                 console.log('hand val greater than suit')
                 return true;
-            }
-                console.log('currPlay suit is higher in suit')
-                return false;
+            } else {
+                console.log('currPlay val is higher in suit')
+                return false;                
+            }            
         } else {
             console.log('hand is lower than currPlay')
             return false;            

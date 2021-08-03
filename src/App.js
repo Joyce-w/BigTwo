@@ -68,6 +68,8 @@ function App() {
       if (hand.length === 1) {
         console.log('hit 1 card')
         console.log(hand, currPlay)
+
+        
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
@@ -77,17 +79,26 @@ function App() {
           updatePlayerHand(codes);
 
           //switch players
-          setIsPlayerOne(false)
+          setIsPlayerOne(!isPlayerOne)
         }
 
         //check to see if hand is higher than currPlay card
         else {
           let isHigher = CardCombos.isHigherSingle(hand, currPlay.cards)
           console.log(isHigher)
+          
           if (isHigher) {
-            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+          setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+      
+          let codes = HandNewSubmission.getPlayerHand(hand)
+          //update the current player's hand without the card(s) that was played
+          updatePlayerHand(codes);
+
+          //switch players
+          setIsPlayerOne(!isPlayerOne)
+            
           } else {
-            alert('current card is not higher than hand to beat')
+            setIsPlayerOne(isPlayerOne)
           }
         }
       }
@@ -153,7 +164,7 @@ function App() {
 
 
   return (
-    <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo}}>
+    <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo, handleNewHand}}>
       <div className="App">
 
         <h1>Big Two</h1>
@@ -166,7 +177,7 @@ function App() {
 
         {/* Have player pick the number of cards to play */}
         {
-          !isLoading ? <CardPickerForm handleNewHand={ handleNewHand }/> :<p>Loading...</p>
+          !isLoading ? <CardPickerForm/> :<p>Loading...</p>
         }
         
 
