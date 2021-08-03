@@ -31,6 +31,14 @@ function LandingPg() {
                         <br></br>
                         (Lowest) ♦, ♣ , ♥, ♠ (Highest)
                     </li>
+                    <br></br>
+                    {/* App information */}
+                    <li>
+                        <b>About This App:</b>
+                        <br></br>
+                        This app was built by <a href="https://www.linkedin.com/in/hello-joycewong/">Joyce</a> with <a href="https://reactjs.org/">React </a>
+                        
+                    </li>
                 
                 </ul>
             </div>
