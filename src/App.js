@@ -62,8 +62,7 @@ function App() {
     //if valid, check hand for correct combo
     if (isValidPlay) {
 
-      //set current player
-      // isPlayerOne ? playerOne : playerTwo
+
 
       if (hand.length === 1) {
         console.log('hit 1 card')
@@ -86,7 +85,7 @@ function App() {
         else {
           let isHigher = CardCombos.isHigherSingle(hand, currPlay.cards)
           console.log(isHigher)
-          
+
           if (isHigher) {
           setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
       
@@ -105,32 +104,45 @@ function App() {
     
       //check if valid pair
       else if (hand.length === 2) {
+        console.log(hand)
         console.log('hit 2 card')
+
         /*check to see if valid 2 card play, update currPlay valid*/
         let isValid = CardCombos.isValidPair(hand);
+
         if (isValid) {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
-            console.log('hit EMPTY 2 card')
-            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-            console.log(HandNewSubmission.updatePlayerHand(hand))
+          console.log('hit EMPTY 2 card')
+          setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+      
+          let codes = HandNewSubmission.getPlayerHand(hand)
+          //update the current player's hand without the card(s) that was played
+          updatePlayerHand(codes);
+
+          //switch players
+          setIsPlayerOne(!isPlayerOne)
           }
           //check to see if hand pair is higher than currPlay pair
           else {
             console.log('there is are 2 cards you need to beat')
             let isHigherPair = CardCombos.isHigherPair(hand, currPlay)
             console.log(isHigherPair)
-            if (!isHigherPair) {
-              alert('Your hand is not higher than the cards to beat!')
-              //make logic to select again if card is not higher
-              return;
+
+            if (isHigherPair) {
+            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+        
+            let codes = HandNewSubmission.getPlayerHand(hand)
+            //update the current player's hand without the card(s) that was played
+            updatePlayerHand(codes);
+
+            //switch players
+            setIsPlayerOne(!isPlayerOne)
+              
             } else {
-              setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+              setIsPlayerOne(isPlayerOne)
             }
           }
-        }
-        else {
-          alert('invalid 2 pair!')
         }
       }
          
@@ -143,15 +155,33 @@ function App() {
           if (currPlay.cards.length === 0) {
             console.log('hit EMPTY 5 card')
             setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-            console.log(HandNewSubmission.updatePlayerHand(hand))
+        
+            let codes = HandNewSubmission.getPlayerHand(hand)
+            //update the current player's hand without the card(s) that was played
+            updatePlayerHand(codes);
+
+            //switch players
+            setIsPlayerOne(!isPlayerOne)
           }
           else {
             console.log('check to see if 5 card if valid')
             //check to see if hand's 5 card is higher than currPlay 
-            let res = CardCombos.isHigher5Card(hand, currPlay.cards)
-            return res ? setCurrPlay({ numCardsPlayed: hand.length, cards: hand }) : console.log('not high enough')
-          }
+            let isHigherFive = CardCombos.isHigher5Card(hand, currPlay.cards)
 
+            if (isHigherFive) {
+            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+        
+            let codes = HandNewSubmission.getPlayerHand(hand)
+            //update the current player's hand without the card(s) that was played
+            updatePlayerHand(codes);
+
+            //switch players
+            setIsPlayerOne(!isPlayerOne)
+              
+            } else {
+              setIsPlayerOne(isPlayerOne)
+            }
+          }
         }
       }
       //Invalid hand, pick again!
