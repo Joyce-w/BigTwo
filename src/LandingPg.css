@@ -5,18 +5,45 @@
 }
 
 .LandingPg-instructions{
-    border: 1px solid #F4C7AB;
+    border: 2px solid #F4C7AB;
     border-radius: 15px;
     margin: 0 20%;
     font-size: larger;
-    
+}
+
+.LandingPg-instructions ul{
+    padding: 1em;
 }
 
 .LandingPg-instructions li{
     list-style: none;
+    margin-bottom: 1em;;
 }
+
 .LandingPg-instructions a{
     text-decoration: none;
 }
 
+.LandingPg-instructions button{
+    
+    text-decoration: none;
+    font-size: large;
+    padding: 0.5em;
+    border: 2px solid #d5e7eb;
+    border-radius: 5px;
+    background-color: #DEEDF0;
+    margin: 5px;
+    font-family: 'Montserrat',
+    sans-serif;
+}
 
+.LandingPg-instructions button a{
+    
+    color: black;
+}
+
+.LandingPg-instructions button:hover {
+    border: 1px solid #B2B8A3;
+    background-color: #B2B8A3;
+
+}
