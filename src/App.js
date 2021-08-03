@@ -13,6 +13,7 @@ function App() {
 
   /*Start with 2 players*/
   const [players, setPlayers] = useState(2);
+  const [passes, setPasses] = useState(0)
   /*Split deck of cards amongst two players */
   const [playerOne, setPlayerOne] = useState();
   const [playerTwo, setPlayerTwo] = useState();
@@ -46,11 +47,42 @@ function App() {
   },[])
 
 
+  //update the state and current player if starting the game or a higher hand is played
+  const updateCurrPlayAndPlayerState = (hand) => {
+    setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
+
+    let codes = HandNewSubmission.getPlayerHand(hand)
+    //update the current player's hand without the card(s) that was played
+    updatePlayerHand(codes);
+
+    //switch players
+    setIsPlayerOne(!isPlayerOne)
+  }
   //updates the current players hand so that the cards that were played are removed
   const updatePlayerHand =(code) =>{
     isPlayerOne ?
     setPlayerOne(playerOne.filter(cards => !code.includes(cards.code))) :
     setPlayerTwo(playerTwo.filter(cards => !code.includes(cards.code)))
+  }
+
+  //Handle changes when player passes their turn
+  const handlePass = () => {
+    console.log(isPlayerOne ? 'player one clicked pass' : 'player two clicked pass')
+    setIsPlayerOne(!isPlayerOne)
+    setPasses((passes) => isNewRound(passes + 1))
+
+  }
+
+  //if both players pass than goes back to the current Player and they can use new hand
+  const isNewRound = (passCount) => {
+    setPasses(passCount)
+    //if both players passes, clear currPlay. 
+    console.log(passCount)
+    if ( passCount === 1) {
+      console.log('RESET CARDS')
+      setPasses(0)
+      setCurrPlay(initial_play)
+    }
   }
 
   //Handle palyers hand submission
@@ -62,8 +94,6 @@ function App() {
     //if valid, check hand for correct combo
     if (isValidPlay) {
 
-
-
       if (hand.length === 1) {
         console.log('hit 1 card')
         console.log(hand, currPlay)
@@ -71,14 +101,7 @@ function App() {
         
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
-          setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-      
-          let codes = HandNewSubmission.getPlayerHand(hand)
-          //update the current player's hand without the card(s) that was played
-          updatePlayerHand(codes);
-
-          //switch players
-          setIsPlayerOne(!isPlayerOne)
+          updateCurrPlayAndPlayerState(hand)
         }
 
         //check to see if hand is higher than currPlay card
@@ -87,14 +110,7 @@ function App() {
           console.log(isHigher)
 
           if (isHigher) {
-          setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-      
-          let codes = HandNewSubmission.getPlayerHand(hand)
-          //update the current player's hand without the card(s) that was played
-          updatePlayerHand(codes);
-
-          //switch players
-          setIsPlayerOne(!isPlayerOne)
+            updateCurrPlayAndPlayerState(hand)
             
           } else {
             setIsPlayerOne(isPlayerOne)
@@ -114,14 +130,7 @@ function App() {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
           console.log('hit EMPTY 2 card')
-          setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-      
-          let codes = HandNewSubmission.getPlayerHand(hand)
-          //update the current player's hand without the card(s) that was played
-          updatePlayerHand(codes);
-
-          //switch players
-          setIsPlayerOne(!isPlayerOne)
+          updateCurrPlayAndPlayerState(hand)
           }
           //check to see if hand pair is higher than currPlay pair
           else {
@@ -130,14 +139,7 @@ function App() {
             console.log(isHigherPair)
 
             if (isHigherPair) {
-            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-        
-            let codes = HandNewSubmission.getPlayerHand(hand)
-            //update the current player's hand without the card(s) that was played
-            updatePlayerHand(codes);
-
-            //switch players
-            setIsPlayerOne(!isPlayerOne)
+              updateCurrPlayAndPlayerState(hand)
               
             } else {
               setIsPlayerOne(isPlayerOne)
@@ -154,14 +156,7 @@ function App() {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
             console.log('hit EMPTY 5 card')
-            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-        
-            let codes = HandNewSubmission.getPlayerHand(hand)
-            //update the current player's hand without the card(s) that was played
-            updatePlayerHand(codes);
-
-            //switch players
-            setIsPlayerOne(!isPlayerOne)
+            updateCurrPlayAndPlayerState(hand)
           }
           else {
             console.log('check to see if 5 card if valid')
@@ -169,14 +164,7 @@ function App() {
             let isHigherFive = CardCombos.isHigher5Card(hand, currPlay.cards)
 
             if (isHigherFive) {
-            setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
-        
-            let codes = HandNewSubmission.getPlayerHand(hand)
-            //update the current player's hand without the card(s) that was played
-            updatePlayerHand(codes);
-
-            //switch players
-            setIsPlayerOne(!isPlayerOne)
+              updateCurrPlayAndPlayerState(hand)
               
             } else {
               setIsPlayerOne(isPlayerOne)
@@ -194,7 +182,7 @@ function App() {
 
 
   return (
-    <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo, handleNewHand}}>
+    <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo, handleNewHand, handlePass}}>
       <div className="App">
 
         <h1>Big Two</h1>

@@ -4,16 +4,16 @@ import PlayersContext from './PlayersContext';
 
 const CurrentPlayersHand = () => {
     // get player cards
-    const { isPlayerOne, playerOne, playerTwo, handleNewHand } = useContext(PlayersContext)
+    const { isPlayerOne, playerOne, playerTwo, handleNewHand, handlePass } = useContext(PlayersContext)
     
   
   const [player, setPlayer] = useState(isPlayerOne ? playerOne : playerTwo)
-console.log(player)
+
     // manage state of each possible card selected
 
     //return array of t/f depending on player's card length
   const [checkedState, setCheckedState] = useState(new Array(player.length).fill(false));
-    console.log(checkedState)
+    // console.log(checkedState)
     //updates player when isPlayerone is toggled
     useEffect(() => {
         setPlayer(isPlayerOne ? playerOne : playerTwo)
@@ -56,29 +56,32 @@ console.log(player)
     // get current players cards
 
     return (
-        <form onSubmit={handleSubmit}>
-            <fieldset className="CardPickForm-playerHand" >
-                <legend>{isPlayerOne ? 'Player Ones Turn': 'Player Twos Turn'}</legend>
-                    {player.map((card, idx) => {
-                        return (
-                            <div  className="card" key={card.code}>
-                                <input
-                                    type="checkbox"
-                                    id={idx}
-                                    name="card"
-                                    checked={checkedState[idx]}
-                                    onChange={(e) => handleChange(card, idx)}></input>
-                                <label  htmlFor={idx}>
-                                    <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>    
-                                </label>
-                            </div>
-                        )
-                    })}
-            </fieldset>
-        <button className="btn btn-default" type="submit">
-          Submit
-        </button>
-      </form>
+        <>
+            <button onClick={ handlePass }>Pass your turn</button>
+            <form onSubmit={handleSubmit}>
+                <fieldset className="CardPickForm-playerHand" >
+                    <legend>{isPlayerOne ? 'Player Ones Turn': 'Player Twos Turn'}</legend>
+                        {player.map((card, idx) => {
+                            return (
+                                <div  className="card" key={card.code}>
+                                    <input
+                                        type="checkbox"
+                                        id={idx}
+                                        name="card"
+                                        checked={checkedState[idx]}
+                                        onChange={(e) => handleChange(card, idx)}></input>
+                                    <label  htmlFor={idx}>
+                                        <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>    
+                                    </label>
+                                </div>
+                            )
+                        })}
+                </fieldset>
+            <button className="btn btn-default" type="submit">
+            Submit
+            </button>
+        </form>
+      </>
     )
 }
 

@@ -178,10 +178,9 @@ CardCombos.pokerRank = [
     'straight',
     'threeKind'
 ]
-
 CardCombos.fiveCardScore = {
     'straightFlush': 0,
-    'fourKind': 1,
+    'fourOfAKind': 1,
     'fullHouse':2,
     'flush': 3,
     'straight' : 4,
