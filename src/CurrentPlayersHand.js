@@ -12,13 +12,12 @@ const CurrentPlayersHand = () => {
     // manage state of each possible card selected
 
     //return array of t/f depending on player's card length
-  const [checkedState, setCheckedState] = useState(new Array(player.length).fill(false));
+  const [checkedState, setCheckedState] = useState(isPlayerOne ? new Array(playerOne.length).fill(false) : new Array(playerTwo.length).fill(false));
     // console.log(checkedState)
     //updates player when isPlayerone is toggled
     useEffect(() => {
         setPlayer(isPlayerOne ? playerOne : playerTwo)
         console.log(isPlayerOne ? 'player one currently' : 'player two currently')
-        setCurrSelection([])
     },[isPlayerOne])
   
     // handle logic when a card is selected
@@ -35,7 +34,6 @@ const CurrentPlayersHand = () => {
         //updates the state with cards the the player is picking
         const updateHand = (cards, i) => {
             console.log(player[i])
-
             /**If card is selected, add to currSelection, if card already present, remove it */
             setCurrSelection(currSelection => cards[i] ? [...currSelection, player[i]] : currSelection.filter(el => el.code !== player[i].code))
             
@@ -50,7 +48,8 @@ const CurrentPlayersHand = () => {
         console.log('currSelection', currSelection)
     
         handleNewHand(currSelection)
-
+        setCurrSelection([])
+        setCheckedState(isPlayerOne ? new Array(playerOne.length).fill(false) : new Array(playerTwo.length).fill(false))
     }
 
     // get current players cards

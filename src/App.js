@@ -190,9 +190,10 @@ function App() {
         }
       }
       //Invalid hand, pick again!
-      alert('Invalid hand, pick again!')
-      return;
 
+        console.log(isPlayerOne ? 'PLAYER ONE TURN' : 'PLAYER TWO TURN')
+
+      return
       // End of isValidPlay()
     }
   }
