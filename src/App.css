@@ -1,48 +1,14 @@
 .App {
   text-align: center;
+  margin: 2em 4em;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
-.Table {
+/* Displays the current hand of cards to beat */
+.App-CurrentHand {
   height: 300px;
-  border: 1px solid black;
-  display: flex;
-  justify-content: center;
-
+  border: 1px solid #F4C7AB;
+  border-radius: 15px;
 }
 
+.App-CurrentHand img{
+  width: 9em;
+}

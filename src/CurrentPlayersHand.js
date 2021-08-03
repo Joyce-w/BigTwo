@@ -1,42 +1,50 @@
 import React, { useState, useContext, useEffect } from 'react';
-import'./CardPickerForm.css';
+import'./CurrentPlayersHand.css';
 import PlayersContext from './PlayersContext';
 
 const CurrentPlayersHand = () => {
-    // get player cards
+    // get player card from context
     const { isPlayerOne, playerOne, playerTwo, handleNewHand, handlePass } = useContext(PlayersContext)
-    
-  
-  const [player, setPlayer] = useState(isPlayerOne ? playerOne : playerTwo)
 
-    // manage state of each possible card selected
+    //store the current player into state
+    const [player, setPlayer] = useState(isPlayerOne ? playerOne : playerTwo)
 
-    //return array of t/f depending on player's card length
-  const [checkedState, setCheckedState] = useState(isPlayerOne ? new Array(playerOne.length).fill(false) : new Array(playerTwo.length).fill(false));
-    // console.log(checkedState)
-    //updates player when isPlayerone is toggled
+
+    /** Return array of t/f depending on current player's card length
+     * Used to mark which cards were 'checkboxed' (selected)
+    */
+    const [checkedState, setCheckedState] = useState(
+        isPlayerOne ?
+            new Array(playerOne.length).fill(false) :
+            new Array(playerTwo.length).fill(false)
+    );
+
+    //updates state to correct player when isPlayerone is changed
     useEffect(() => {
         setPlayer(isPlayerOne ? playerOne : playerTwo)
         console.log(isPlayerOne ? 'player one currently' : 'player two currently')
     },[isPlayerOne])
   
-    // handle logic when a card is selected
+    // Used to hold the data of the currently selected cards
     const [currSelection, setCurrSelection] = useState([])
 
     //handle state when player picks cards
     const handleChange = (card, index) => {
-        //check if the card is 'checkboxed' in state, toggle on clicks
+        //check if the card is 'checkboxed' in state, toggle t/f on clicks
         let isCardChecked = checkedState.map((card, idx) =>
             idx === index ? !card : card)
-        //updates t/f depending on what cards is picked
+        //updates t/f depending on what cards was selected
         setCheckedState(isCardChecked)
         
-        //updates the state with cards the the player is picking
+        //updates the state with cards the the player is selecting
         const updateHand = (cards, i) => {
             console.log(player[i])
-            /**If card is selected, add to currSelection, if card already present, remove it */
-            setCurrSelection(currSelection => cards[i] ? [...currSelection, player[i]] : currSelection.filter(el => el.code !== player[i].code))
-            
+            /**If card is selected, upate to currSelection, if card already present, remove it */
+            setCurrSelection(currSelection =>
+                cards[i]
+                    ? [...currSelection, player[i]] :
+                    currSelection.filter(el => el.code !== player[i].code)
+            )
         }
         updateHand(isCardChecked, index)
     }
@@ -45,9 +53,10 @@ const CurrentPlayersHand = () => {
     //handles the submit when player decides on how many cards to play
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('currSelection', currSelection)
-    
+        
+        //logic from parent component to check if cards selected are valid to play
         handleNewHand(currSelection)
+        //reset the state of the checkboxes & clears the state of any cards that were previously selected
         setCurrSelection([])
         setCheckedState(isPlayerOne ? new Array(playerOne.length).fill(false) : new Array(playerTwo.length).fill(false))
     }
@@ -55,14 +64,18 @@ const CurrentPlayersHand = () => {
     // get current players cards
 
     return (
-        <>
-            <button onClick={ handlePass }>Pass your turn</button>
-            <form onSubmit={handleSubmit}>
+        <div className="CardPickForm">
+            
+            <form className="CardPickForm-form" onSubmit={handleSubmit}>
+                <button className="Submit" type="submit"> Play Cards </button>
+                or
+                <button onClick={handlePass}>Pass Your Turn</button>
+
                 <fieldset className="CardPickForm-playerHand" >
-                    <legend>{isPlayerOne ? 'Player Ones Turn': 'Player Twos Turn'}</legend>
+                    <legend>{isPlayerOne ? <b>Player Ones Turn</b>: <b>Player Twos Turn</b>}</legend>
                         {player.map((card, idx) => {
                             return (
-                                <div  className="card" key={card.code}>
+                                <div className="card" key={card.code}>
                                     <input
                                         type="checkbox"
                                         id={idx}
@@ -70,17 +83,15 @@ const CurrentPlayersHand = () => {
                                         checked={checkedState[idx]}
                                         onChange={(e) => handleChange(card, idx)}></input>
                                     <label  htmlFor={idx}>
-                                        <img className="GameTable-cards" alt={ card.code } key={card.code} src={card.image}></img>    
+                                        <img className="CardPickForm-cards" alt={ card.code } key={card.code} src={card.image}></img>    
                                     </label>
                                 </div>
                             )
                         })}
                 </fieldset>
-            <button className="btn btn-default" type="submit">
-            Submit
-            </button>
+
         </form>
-      </>
+      </div>
     )
 }
 

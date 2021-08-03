@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 // import { Route } from 'react-router-dom';
 import './App.css';
-import CardPickerForm from './CardPickerForm'
 import Deck from './Deck';
 import CardCombos from './CardCheck';
-import HandNewSubmission from './HandleNewHandSubmission';
 
 // Context
 import PlayersContext from './PlayersContext';  
+import CurrentPlayersHand from './CurrentPlayersHand';
 
 function App() {
 
@@ -30,7 +29,6 @@ function App() {
 
   const [currPlay, setCurrPlay] = useState(initial_play)
 
-
   /*get a deck id and then split the deck, store in state*/
   useEffect(() => {
     //set state so all player cards are stored
@@ -51,7 +49,7 @@ function App() {
   const updateCurrPlayAndPlayerState = (hand) => {
     setCurrPlay({ numCardsPlayed: hand.length, cards: hand })
 
-    let codes = HandNewSubmission.getPlayerHand(hand)
+    let codes = getPlayerHand(hand)
     //update the current player's hand without the card(s) that was played
     updatePlayerHand(codes);
 
@@ -82,6 +80,12 @@ function App() {
     setPlayerTwo(playerTwo.filter(cards => !code.includes(cards.code)))
   }
 
+    //Updates the player's hand in the state
+    const getPlayerHand = (hand) => {
+        let codes = hand.map(card => card.code)
+        console.log(codes)
+        return codes
+    } 
 
   //Handle changes when player passes their turn
   const handlePass = () => {
@@ -204,21 +208,20 @@ function App() {
       <div className="App">
 
         <h1>Big Two</h1>
-        <div className="Table">
-          <p>Current Hand to Beat</p>
+        <div className="App-CurrentHand">
+
+          <h4>Current Hand to Beat</h4>
+
           {currPlay.cards.map(card => {
-            return <img key={ card.code } alt={card.code} src={card.image}></img>
+            return <img className="App-cards" key={ card.code } alt={card.code} src={card.image}></img>
           })}
         </div>
 
         {/* Have player pick the number of cards to play */}
         {
-          !isLoading ? <CardPickerForm/> :<p>Loading...</p>
+          !isLoading ? <CurrentPlayersHand/> :<p>Loading...</p>
         }
         
-
-
-        {/* <GameTable/> */}
     </div>
     </PlayersContext.Provider>    
   );
