@@ -229,7 +229,8 @@ function GamePlay() {
               {currPlay.cards.map(card => {
                 return <img className="App-cards" key={card.code} alt={card.code} src={card.image}></img>
                 })
-              }
+              }              
+
               {/* Display any error messages */}
               {alert ? <h4>{alert}</h4> : null}
               
