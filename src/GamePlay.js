@@ -194,9 +194,7 @@ function GamePlay() {
 
       // End of isValidPlay()
     }
-    else {
-      setAlert(() => 'Invalid number of cards selected')
-    }
+
     setIsPlayerOne(isPlayerOne)
     
   }
