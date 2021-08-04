@@ -18,3 +18,21 @@
 .App-CurrentHand img {
     width: 9em;
 }
+
+
+.App-btn {
+    padding: 0.5em;
+    border: 1px solid #DEEDF0;
+    border-radius: 5px;
+    background-color: #DEEDF0;
+    margin: 5px;
+    font-size: medium;
+    font-family: 'Montserrat',
+        sans-serif;
+
+}
+
+.App-btn:hover {
+    border: 1px solid #B2B8A3;
+    background-color: #B2B8A3;
+}

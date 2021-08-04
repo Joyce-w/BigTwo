@@ -23,6 +23,9 @@ function GamePlay() {
   /*Keep track of which player is currently playing */
   const [isPlayerOne, setIsPlayerOne] = useState(true)
 
+  //check for winner
+  const [isWinner, setIsWinner] = useState(false)
+
   /**Keep track of the most curent play */
   const initial_play = {
     numCardsPlayed: 0, cards: []
@@ -59,21 +62,15 @@ function GamePlay() {
     
   }
 
-  //check for win
+  //check for winner
   const checkForWin=(player,code) =>{
     let cardsRemaining = player.filter(cards => !code.includes(cards.code)).length
+    
     if (cardsRemaining === 0) {
-      isPlayerOne ? alert('PLAYER ONE WON!') : alert('PLAYER TWO WON!')
-      //render wining screen?
-      
-      return (
-                <Route exact path="/">
-          <LandingPg />          
-        </Route>
-
-      )
+      setIsWinner((isWinner)=>!isWinner)
     }
   }
+
   //updates the current players hand so that the cards that were played are removed
   const updatePlayerHand = (code) => {
     //check for win
@@ -186,24 +183,43 @@ function GamePlay() {
     setIsPlayerOne(isPlayerOne)
   }
 
+  //reload the page to reset game
+  const handleReset = () => {
+    window.location.reload();
+  }
 
   return (
     <PlayersContext.Provider value={{isLoading, isPlayerOne, playerOne, playerTwo, handleNewHand, handlePass}}>
       <div className="App">
 
-        <h1>Big Two</h1>
-        <div className="App-CurrentHand">
+        
+        {/* display restart button if won */}
+        {isWinner ?
+          <>
+            <h3>We have a winner!</h3>
+            <button onClick={ handleReset } className="App-btn">Play Again?</button>
+          </>
+          : 
+          <>
+            <h1>{isPlayerOne ? <b>Player Ones Turn</b> : <b>Player Twos Turn</b>}</h1>
+            <div className="App-CurrentHand">
 
-          <h4>Current Hand to Beat</h4>
+              <h4>Current Hand to Beat</h4>
 
-          {currPlay.cards.map(card => {
-            return <img className="App-cards" key={ card.code } alt={card.code} src={card.image}></img>
-          })}
-        </div>
-        {/* Have player pick the number of cards to play */}
-        {
-          !isLoading ? <CurrentPlayersHand/> :<p>Loading...</p>
+                {currPlay.cards.map(card => {
+                  return <img className="App-cards" key={card.code} alt={card.code} src={card.image}></img>
+                  })
+                }
+            </div>
+
+            {/* Have player pick the number of cards to play */}
+            {
+              !isLoading ? <CurrentPlayersHand/> :<p>Loading...</p>
+            }          
+          </>
         }
+
+
         
     </div>
     </PlayersContext.Provider>    
