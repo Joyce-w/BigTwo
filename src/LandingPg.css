@@ -46,3 +46,48 @@
     background-color: #B2B8A3;
 
 }
+
+
+/* Engineer card */
+.LandingPg-card{
+    /* border: 1px solid black; */
+    width: 30%;
+    margin:auto;
+    padding: auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+.LandingPg-img-border{
+    border: 2px dashed #f0bd9d;
+    width:fit-content;
+    height:10em;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 5% auto;
+
+}
+
+.LandingPg-card img{
+    margin:none;
+    width: 10em;
+    border-radius: 50%;
+}
+
+.LandingPg-card h4{
+margin: 4px;
+}
+
+.LandingPg-card a{
+    text-decoration: none;
+    margin: 0 4%;
+}
+
+.LandingPg-card p{
+    margin-top: 0;
+}
+
+a:visited{
+    color: initial;
+}
