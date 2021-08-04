@@ -3,16 +3,14 @@ import { Route } from 'react-router-dom';
 import './GamePlay.css';
 import Deck from './Deck';
 import CardCombos from './CardCheck';
-import LandingPg from './LandingPg';
+import Alert from './Alerts'
+import CurrentPlayersHand from './CurrentPlayersHand';
 // Context
 import PlayersContext from './PlayersContext';  
-import CurrentPlayersHand from './CurrentPlayersHand';
 
 
 function GamePlay() {
 
-  /*Start with 2 players*/
-  const [players, setPlayers] = useState(2);
   const [passes, setPasses] = useState(0)
   /*Split deck of cards amongst two players */
   const [playerOne, setPlayerOne] = useState();
@@ -22,23 +20,21 @@ function GamePlay() {
   const [isLoading, setIsLoading] = useState(true)
   /*Keep track of which player is currently playing */
   const [isPlayerOne, setIsPlayerOne] = useState(true)
-
   //check for winner
   const [isWinner, setIsWinner] = useState(false)
-
   /**Keep track of the most curent play */
   const initial_play = {
     numCardsPlayed: 0, cards: []
   }
-
   const [currPlay, setCurrPlay] = useState(initial_play)
+  const [alert, setAlert] = useState(null)
 
   /*get a deck id and then split the deck, store in state*/
   useEffect(() => {
     //set state so all player cards are stored
     const splitDeck = async () => {
       let {deck_id} = await Deck.shuffleNewCard();
-      let { p1, p2 } = await Deck.splitDeck(players, deck_id)
+      let { p1, p2 } = await Deck.splitDeck(2, deck_id)
 
       setPlayerOne(p1.data.cards)
       setPlayerTwo(p2.data.cards)
@@ -94,6 +90,7 @@ function GamePlay() {
   const handlePass = () => {
     setIsPlayerOne(!isPlayerOne)
     setPasses((passes) => isNewRound(passes + 1))
+    
   }
 
   //if both players pass than goes back to the current Player and they can use new hand
@@ -108,9 +105,10 @@ function GamePlay() {
 
   //Handle palyers hand submission
   const handleNewHand = (hand) => {
+    setAlert(null)
     //check to see if the same amount of cards are played
     let isValidPlay = CardCombos.validCardPlay(currPlay.numCardsPlayed, hand.length)
-    
+  
     //if valid, check hand for correct combo
     if (isValidPlay) {
 
@@ -118,13 +116,16 @@ function GamePlay() {
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
           updateCurrPlayAndPlayerState(hand)
+          setAlert(null)
         }
         //check to see if hand is higher than currPlay card
         else {
           let isHigher = CardCombos.isHigherSingle(hand, currPlay.cards)
           if (isHigher) {
             updateCurrPlayAndPlayerState(hand)
+            setAlert(null)
           } else {
+            setAlert(() => 'Your card must be higher in value, or higher in suit if the values are equal!')
             setIsPlayerOne(isPlayerOne)
           }
         }
@@ -134,10 +135,12 @@ function GamePlay() {
       else if (hand.length === 2) {
         /*check to see if valid 2 card play, update currPlay valid*/
         let isValid = CardCombos.isValidPair(hand);
+
         if (isValid) {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
-          updateCurrPlayAndPlayerState(hand)
+            updateCurrPlayAndPlayerState(hand)
+            setAlert(null)
           }
           //check to see if hand pair is higher than currPlay pair
           else {
@@ -145,21 +148,30 @@ function GamePlay() {
 
             if (isHigherPair) {
               updateCurrPlayAndPlayerState(hand)
+              setAlert(null)
               
             } else {
+              console.log('not higher')
+              setAlert(() =>'Your card value must be higher! If values are the same, your highest suit must be higher than their highest suit')
               setIsPlayerOne(isPlayerOne)
             }
           }
         }
+        else {
+        setAlert(() => 'Values on the card must be the same to be a pair!')          
+        }
+
       }
          
       /*check for valid five-card, update currPlay valid*/
       else if (hand.length === 5) {
         let isValid = CardCombos.isValidFiveCard(hand)
+
         if (isValid) {
           //add hand if currPlay is empty
           if (currPlay.cards.length === 0) {
             updateCurrPlayAndPlayerState(hand)
+            setAlert(null)
           }
           else {
             //check to see if hand's 5 card is higher than currPlay 
@@ -167,20 +179,26 @@ function GamePlay() {
 
             if (isHigherFive) {
               updateCurrPlayAndPlayerState(hand)
+              setAlert(null)
               
             } else {
+              setAlert(() => 'Your hand is not higher than the current. Try again!')
               setIsPlayerOne(isPlayerOne)
             }
           }
         }
+        else {
+          setAlert(() => 'Invalid hand! Must be any of the follow: three of a kind, straight, flush, full House, four of a kind, or straight flush.')  
+        }
       }
 
-      //Invalid hand, pick again!
-      return;
       // End of isValidPlay()
     }
-    
+    else {
+      setAlert(() => 'Invalid number of cards selected')
+    }
     setIsPlayerOne(isPlayerOne)
+    
   }
 
   //reload the page to reset game
@@ -201,15 +219,24 @@ function GamePlay() {
           </>
           : 
           <>
+            {/* Display game if  there is no current winner*/}
             <h1>{isPlayerOne ? <b>Player Ones Turn</b> : <b>Player Twos Turn</b>}</h1>
             <div className="App-CurrentHand">
+              
+              {/* Instructions when the there are no cards */}
+              {currPlay.numCardsPlayed === 0 ?
+                <h4>Pick a single, pair, or poker hand to play!</h4> :
+                <h4>Current Hand to Beat</h4>
+              }              
 
-              <h4>Current Hand to Beat</h4>
-
-                {currPlay.cards.map(card => {
-                  return <img className="App-cards" key={card.code} alt={card.code} src={card.image}></img>
-                  })
-                }
+              {/* Display the current valid hand played */}
+              {currPlay.cards.map(card => {
+                return <img className="App-cards" key={card.code} alt={card.code} src={card.image}></img>
+                })
+              }
+              {/* Display any error messages */}
+              {alert ? <h4>{alert}</h4> : null}
+              
             </div>
 
             {/* Have player pick the number of cards to play */}

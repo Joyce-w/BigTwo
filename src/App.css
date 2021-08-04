@@ -12,6 +12,10 @@
   height: 300px;
   border: 1px solid #F4C7AB;
   border-radius: 15px;
+  padding: 1em;
+}
+.App-CurrentHand h4{
+  margin: 1em;
 }
 
 .App-CurrentHand img{
