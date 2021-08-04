@@ -73,6 +73,7 @@
     margin:none;
     width: 10em;
     border-radius: 50%;
+    border: 1px solid #f0bd9d;
 }
 
 .LandingPg-card h4{

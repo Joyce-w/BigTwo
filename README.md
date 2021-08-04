@@ -29,3 +29,6 @@ Shortly after learning React, I was introduced to this Hackathon and thought it 
 - This project could use additional hints/help during game play.
 
 
+### This project was made solo by Joyce Wong! 
+- [Linkedin]([BigTwoPreview.gif](https://www.linkedin.com/in/hello-joycewong/))
+- [GitHub](https://github.com/Joyce-w)

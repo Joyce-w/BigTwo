@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 import './GamePlay.css';
 import Deck from './Deck';
 import CardCombos from './CardCheck';
-import Alert from './Alerts'
 import CurrentPlayersHand from './CurrentPlayersHand';
 // Context
 import PlayersContext from './PlayersContext';  
@@ -54,7 +53,7 @@ function GamePlay() {
     updatePlayerHand(codes);
 
     //switch players
-    setIsPlayerOne(!isPlayerOne)
+    
     
   }
 
@@ -115,8 +114,10 @@ function GamePlay() {
       if (hand.length === 1) {
         //add hand if currPlay is empty
         if (currPlay.cards.length === 0) {
+          console.log(isPlayerOne)
           updateCurrPlayAndPlayerState(hand)
           setAlert(null)
+          setIsPlayerOne(() =>!isPlayerOne)
         }
         //check to see if hand is higher than currPlay card
         else {
@@ -188,15 +189,12 @@ function GamePlay() {
           }
         }
         else {
-          setAlert(() => 'Invalid hand! Must be any of the follow: three of a kind, straight, flush, full House, four of a kind, or straight flush.')  
+          setAlert(() => 'Invalid hand! Must be any of the follow: three of a kind, straight, flush, full house, four of a kind, or straight flush.')  
         }
       }
 
       // End of isValidPlay()
     }
-
-    setIsPlayerOne(isPlayerOne)
-    
   }
 
   //reload the page to reset game
