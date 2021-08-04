@@ -53,7 +53,7 @@ function GamePlay() {
     updatePlayerHand(codes);
 
     //switch players
-    
+    setIsPlayerOne(!isPlayerOne)
     
   }
 
@@ -117,7 +117,7 @@ function GamePlay() {
           console.log(isPlayerOne)
           updateCurrPlayAndPlayerState(hand)
           setAlert(null)
-          setIsPlayerOne(() =>!isPlayerOne)
+          // setIsPlayerOne(() =>!isPlayerOne)
         }
         //check to see if hand is higher than currPlay card
         else {
@@ -152,7 +152,6 @@ function GamePlay() {
               setAlert(null)
               
             } else {
-              console.log('not higher')
               setAlert(() =>'Your card value must be higher! If values are the same, your highest suit must be higher than their highest suit')
               setIsPlayerOne(isPlayerOne)
             }
@@ -189,12 +188,14 @@ function GamePlay() {
           }
         }
         else {
+          setIsPlayerOne(isPlayerOne)
           setAlert(() => 'Invalid hand! Must be any of the follow: three of a kind, straight, flush, full house, four of a kind, or straight flush.')  
         }
       }
-
+      return;
       // End of isValidPlay()
     }
+    setIsPlayerOne(isPlayerOne)
   }
 
   //reload the page to reset game
